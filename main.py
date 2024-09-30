@@ -17,7 +17,7 @@ NAVBAR_HEIGHT = "70px"
 app.layout = html.Div([
     dbc.Navbar(
         dbc.Container([
-            dbc.NavbarBrand("Groupe M2VT", href="/", className="d-flex align-items-center"),
+            dbc.NavbarBrand("Groupe MC BDD", href="/login", className="d-flex align-items-center"),
             dbc.NavbarToggler(id="navbar-toggler"),
             dbc.Collapse(
                 dbc.Nav(
@@ -44,6 +44,6 @@ def toggle_navbar(n, is_open):
         return not is_open
     return is_open
 
-# Point d'entrée de l'application
+# Point d'entree de l'application
 if __name__ == "__main__":
     app.run_server(debug=True)
