@@ -6,20 +6,17 @@ import pandas as pd
 import json
 import plotly.express as px
 
-# # Importer l'application
-# from main import app
+# Enregistrer la page dans le registre avec le decorateur
+dash.register_page(__name__, path='/stats', name='Stats', order=4)
 
-# Enregistrer la page dans le registre avec le d?corateur
-dash.register_page(__name__, path='/stats', name='Stats',order=4)
-
-# Charger les donn?es CSV
+# Charger les donnees CSV
 try:
     df = pd.read_csv('data/data_fictive.csv', sep=';', encoding='utf-8')
 except Exception as e:
     print(f"Erreur lors du chargement du CSV : {e}")
     df = pd.read_csv('data/data_fictive.csv', sep=';', encoding='ISO-8859-1')
 
-# Charger les utilisateurs ? partir du fichier JSON
+# Charger les utilisateurs a partir du fichier JSON
 try:
     with open('data/users.json', 'r', encoding='utf-8') as f:
         users = json.load(f)
@@ -27,7 +24,7 @@ except Exception as e:
     print(f"Erreur lors du chargement du fichier JSON : {e}")
     users = []
 
-# Convertir les utilisateurs en DataFrame si n?cessaire
+# Convertir les utilisateurs en DataFrame si necessaire
 users_df = pd.DataFrame(users)
 
 # Fonctions utilitaires
@@ -35,7 +32,10 @@ def count_non_empty(series):
     return series.notna().sum()
 
 def create_distribution_chart(data, title):
-    fig = px.pie(data, names=data.index, values=data.values, title=title)
+    # Reinitialiser l'index pour obtenir un DataFrame avec des colonnes
+    data_df = data.reset_index()
+    data_df.columns = ['index', 'count']  # Renommer les colonnes pour le graphique
+    fig = px.pie(data_frame=data_df, names='index', values='count', title=title)
     return dcc.Graph(figure=fig)
 
 # Composants pour les statistiques globales
@@ -65,23 +65,23 @@ def personal_stats():
         html.Div(id='personal-stats-content')
     ])
 
-# @app.callback(
-#     Output('personal-stats-content', 'children'),
-#     Input('user-dropdown', 'value')
-# )
-
+# Callback pour mettre a jour les statistiques personnelles
+@dash.callback(
+    Output('personal-stats-content', 'children'),
+    Input('user-dropdown', 'value')
+)
 def update_personal_stats(selected_user):
     if selected_user is None:
-        return html.Div("Veuillez s?lectionner un utilisateur.")
-    
+        return html.Div("Veuillez selectionner un utilisateur.")
+
     user_df = df[df['User'] == selected_user]
     return html.Div([
         html.Div([
             html.P(f"Nombre d'annotations: {len(user_df)}"),
             html.P(f"Nombre de validations: {count_non_empty(user_df['Reviewer'])}"),
         ], className="stats-summary"),
-        create_distribution_chart(user_df['Couleur'].value_counts(), f"R?partition des couleurs pour {selected_user}"),
-        create_distribution_chart(user_df['Marque'].value_counts(), f"R?partition des marques pour {selected_user}"),
+        create_distribution_chart(user_df['Couleur'].value_counts(), f"Repartition des couleurs pour {selected_user}"),
+        create_distribution_chart(user_df['Marque'].value_counts(), f"Repartition des marques pour {selected_user}"),
     ])
 
 # Layout principal
