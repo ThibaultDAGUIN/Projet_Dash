@@ -1,0 +1,21 @@
+﻿idAnno;TimeStamp;User;idImg;Trace;Couleur;Marque;Reviewer
+id1;28/09/2024 09:00;Thibault;car429.jpg;;Rouge;Mercedes;Maël
+id2;29/09/2024 10:00;Vadim;car436.jpg;;Noir;Aston Martin;Thibault
+id3;30/09/2024 11:00;Maël;car428.jpg;;Bleu;Kia;
+id4;01/10/2024 12:00;Manon;car430.jpg;;Gris;Renault;Thibault
+id5;02/10/2024 13:00;Thibault;car428.jpg;;Bleu;Mercedes;Vadim
+id6;03/10/2024 14:00;Vadim;car435.jpg;;Rouge;Aston Martin;Thibault
+id7;04/10/2024 15:00;Maël;car425.jpg;;Noir;Kia;
+id8;05/10/2024 16:00;Manon;car430.jpg;;Bleu;Renault;Vadim
+id9;06/10/2024 17:00;Thibault;car433.jpg;;Gris;Mercedes;Manon
+id10;07/10/2024 18:00;Vadim;car425.jpg;;Bleu;Aston Martin;Manon
+id11;08/10/2024 19:00;Maël;car429.jpg;;Rouge;Kia;Vadim
+id12;09/10/2024 20:00;Manon;car429.jpg;;Noir;Renault;Maël
+id13;10/10/2024 21:00;Thibault;car428.jpg;;Bleu;Mercedes;Thibault
+id14;11/10/2024 22:00;Vadim;car429.jpg;;Gris;Aston Martin;
+id15;12/10/2024 23:00;Maël;car428.jpg;;Bleu;Kia;Manon
+id16;14/10/2024 00:00;Manon;car429.jpg;;Rouge;Renault;
+id17;15/10/2024 01:00;Thibault;car432.jpg;;Noir;Mercedes;Vadim
+id18;16/10/2024 02:00;Vadim;car431.jpg;;Bleu;Aston Martin;Manon
+id19;17/10/2024 03:00;Maël;car431.jpg;;Gris;Kia;
+id20;18/10/2024 04:00;Manon;car428.jpg;;Bleu;Renault;Thibault
