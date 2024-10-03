@@ -1,0 +1,619 @@
+Project Path: Projet_Dash
+
+Source Tree:
+
+```
+Projet_Dash
+├── app.py
+├── data
+│   ├── annotations.json
+│   ├── cars
+│   │   ├── car425.jpg
+│   │   ├── car426.jpg
+│   │   ├── car427.jpg
+│   │   ├── car428.jpg
+│   │   ├── car429.jpg
+│   │   ├── car430.jpg
+│   │   ├── car431.jpg
+│   │   ├── car432.jpg
+│   │   ├── car433.jpg
+│   │   ├── car434.jpg
+│   │   ├── car435.jpg
+│   │   ├── car436.jpg
+│   │   ├── flashmcqueen.jpeg
+│   │   ├── mazdacx3.jpg
+│   │   └── porsche 911-gt3rs.jpeg
+│   └── users.json
+├── pages
+│   ├── accueil.py
+│   ├── annotation.py
+│   ├── annoter.py
+│   ├── login.py
+│   ├── stats.py
+│   └── __pycache__
+│       ├── accueil.cpython-311.pyc
+│       ├── accueil.cpython-312.pyc
+│       ├── annotation.cpython-311.pyc
+│       ├── annotation.cpython-312.pyc
+│       ├── annoter.cpython-311.pyc
+│       ├── annoter.cpython-312.pyc
+│       ├── contexte.cpython-312.pyc
+│       ├── login.cpython-311.pyc
+│       ├── login.cpython-312.pyc
+│       ├── stats.cpython-311.pyc
+│       ├── stats.cpython-312.pyc
+│       └── truc.cpython-312.pyc
+├── requirements.txt
+└── utile.py
+
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\app.py`:
+
+```py
+import dash
+from dash import dcc, html, callback, Input, Output
+import dash_bootstrap_components as dbc
+
+app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP, "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"])
+
+app.layout = html.Div([
+    dcc.Location(id='url', refresh=True),
+    dbc.NavbarSimple(
+        children=[
+            dbc.NavLink('Accueil', href='/accueil'),
+            dbc.NavLink('Interface d\'annotation', href='/annoter'),
+            dbc.NavLink('Liste des annotations', href='/annotation'),
+            dbc.NavLink('Statistiques', href='/stats'),
+            html.Span(id='user-text', className='ml-auto text-light align-self-center', style={'font-size': '0.9rem', 'marginLeft': '200px', 'marginRight':'0px'})
+
+        ],
+        brand="Projet d'Annotation M2VT",
+        color="#333333",
+        dark=True,
+    ),
+
+    dash.page_container,
+    dcc.Store(id='user-name-store')  # Pour stocker le nom d'utilisateur en cours sur la session
+
+])
+
+@callback(
+    Output('user-text', 'children'),
+    Input('user-name-store', 'data')
+)
+def update_user_text(user_name):
+    if user_name:
+        return f"Vous êtes loggé en tant que {user_name}."
+    return "Vous n'êtes pas loggé."
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\data\annotations.json`:
+
+```json
+[
+    {
+        "id": "car425.jpg",
+        "annotateur": "Anonyme",
+        "date": "2024-10-03",
+        "reviewer": "",
+        "annotations": [
+          {
+            "editable": true,
+            "visible": true,
+            "showlegend": false,
+            "legend": "legend",
+            "legendgroup": "",
+            "legendgrouptitle": {
+              "text": "",
+              "font": {
+                "weight": "normal",
+                "style": "normal",
+                "variant": "normal",
+                "lineposition": "none",
+                "textcase": "normal",
+                "shadow": "none"
+              }
+            },
+            "legendrank": 1000,
+            "label": {
+              "text": "",
+              "texttemplate": ""
+            },
+            "xref": "x",
+            "yref": "y",
+            "layer": "above",
+            "opacity": 0.3,
+            "line": {
+              "color": "black",
+              "width": 2,
+              "dash": "solid"
+            },
+            "fillcolor": "cyan",
+            "fillrule": "evenodd",
+            "type": "rect",
+            "x0": 72.38387096774194,
+            "y0": 56.99798387096774,
+            "x1": 383.28709677419357,
+            "y1": 279.2173387096774
+        }
+        ]
+    }
+]
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\data\users.json`:
+
+```json
+[
+    {
+        "id": 1,
+        "name": "Thibault"
+    },
+    {
+        "id": 2,
+        "name": "Vadim"
+    },
+    {
+        "id": 3,
+        "name": "Manon"
+    },
+    {
+        "id": 4,
+        "name": "Ma\u00ebl"
+    }
+]
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\pages\accueil.py`:
+
+```py
+import dash
+from dash import html
+
+dash.register_page(__name__)
+
+layout = html.Div([
+    html.H1("C'est la page de contexte"),
+    html.Div("C'est la page de contexte"),
+])
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\pages\annotation.py`:
+
+```py
+import dash
+from dash import html, dcc
+import dash_table
+import json
+import os
+
+dash.register_page(__name__)
+
+# Path to the annotations file
+annotations_file = './data/annotations.json'
+
+# Load annotations
+def load_annotations():
+    if os.path.exists(annotations_file):
+        with open(annotations_file, 'r') as f:
+            return json.load(f)
+    return []
+
+# Prepare the data for the table
+def prepare_table_data():
+    annotations = load_annotations()
+    table_data = []
+    
+    for annotation in annotations:
+        # Extract data from the JSON structure
+        for ann in annotation['annotations']:
+            table_data.append({
+                'Image Name': annotation.get('nom_image', 'N/A'),  # Adjust as needed; 'nom_image' may not exist in your JSON
+                'Date': annotation.get('date', 'N/A'),
+                'Annotateur': annotation.get('annotateur', 'Anonyme'),
+                'Reviewer': annotation.get('reviewer', 'N/A'),
+                'Annotation Details': str(ann)  # Add details of the annotation
+            })
+    
+    return table_data
+
+# Column setup for the DataTable
+columns = [
+    {'name': 'Image Name', 'id': 'Image Name'},
+    {'name': 'Date', 'id': 'Date'},
+    {'name': 'Annotateur', 'id': 'Annotateur'},
+    {'name': 'Reviewer', 'id': 'Reviewer'},
+]
+
+# Layout of the page
+layout = html.Div([
+    html.H1("Liste des Annotations"),
+    html.Div("Voici la liste des annotations effectuées :"),
+    
+    dash_table.DataTable(
+        id='annotation-table',
+        columns=columns,
+        data=prepare_table_data(),
+        style_table={'width': '80%', 'margin': 'auto'},
+        style_header={
+            'backgroundColor': 'rgb(230, 230, 230)',
+            'fontWeight': 'bold'
+        },
+        style_cell={'textAlign': 'left'},
+        page_size=10,  # Show 10 entries per page
+    )
+])
+
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\pages\annoter.py`:
+
+```py
+import dash
+from dash import dcc, html, Input, Output, callback, State
+from skimage import io
+import plotly_express as px
+import os, json, random, base64, uuid
+import dash_bootstrap_components as dbc
+
+# Dossier images et fichiers JSON
+dossier_img = './data/cars/'
+users_file = './data/users.json'
+annotations_file = './data/annotations.json'
+
+def recup_img_aleatoire():
+    files = os.listdir(dossier_img)
+    images = [file for file in files if file.endswith(('png', 'jpg', 'jpeg'))]
+    if images:
+        random_image = random.choice(images)
+        return os.path.join(dossier_img, random_image)
+    return None
+
+def charger_image():
+    chemin_image = recup_img_aleatoire()
+    if chemin_image:
+        return io.imread(chemin_image)
+    return None
+
+def save_img(content, filename):
+    data = content.split(",")[1]
+    img_data = base64.b64decode(data)
+    filepath = os.path.join(dossier_img, filename)
+    with open(filepath, 'wb') as f:
+        f.write(img_data)
+    return filepath
+
+def get_user_data():
+    with open(users_file, 'r') as f:
+        users = json.load(f)
+    return users
+
+def load_annotations(file_path):
+    if not os.path.exists(file_path):
+        return []
+    with open(file_path, 'r') as f:
+        return json.load(f)
+
+def save_annotations(file_path, new_annotation):
+    # Charger les annotations existantes
+    annotations = load_annotations(file_path)
+    annotations.append(new_annotation)
+
+    # Sauvegarder les annotations mises à jour
+    with open(file_path, 'w') as f:
+        json.dump(annotations, f, indent=4)
+        print(f"Annotations sauvegardées : {annotations}")  # Log pour débogage
+
+dash.register_page(__name__)
+
+img = charger_image()
+
+if img is not None:
+    fig = px.imshow(img)
+    fig.update_layout(
+        dragmode="drawrect",
+        newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+    )
+else:
+    fig = None
+
+layout = html.Div(
+    [
+        html.H3("Interface d'annotation"),
+        dcc.Graph(id="graph-styled-annotations", figure=fig),
+
+        dcc.Upload(
+            id="import-image",
+            children=html.Div(
+                ['Glissez et déposez une image ici, ou ',
+                 html.A('sélectionnez une image')],
+                style={
+                    'borderWidth': '0.5px', 'borderStyle': 'solid', 'backgroundColor':'rgba(66, 66, 66, 0.15)',
+                    'padding': '20px', 'textAlign': 'center', 'width': '50%',
+                    'margin': '5px auto', 'cursor': 'pointer'
+                }
+            ),
+            multiple=False
+        ),
+
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Confirmation de l'importation"),
+                dbc.ModalBody("Voulez-vous confirmer l'importation de ce fichier ?"),
+                dbc.ModalFooter(
+                    [
+                        dbc.Button("Oui", id="confirmer_modal", color="success"),
+                        dbc.Button("Non", id="fermer_modal", color="danger", className="ms-2"),
+                    ]
+                ),
+            ],
+            id="modal",
+            is_open=False,
+        ),
+
+        dbc.Button(
+            "Valider l'annotation",
+            id="bouton_valider",
+            color='success',
+            n_clicks=0,
+            className='my-3'
+        ),
+
+        dbc.Button(
+            "Modifier l'annotation",
+            id="bouton_reset",
+            color='danger',
+            n_clicks=0,
+            className='my-3'
+        ),
+
+        dcc.Store(id='user-name-store')  # Pour stocker le nom d'utilisateur en cours sur la session
+    ]
+)
+
+# Callback pour le modal
+@callback(
+    Output('modal', 'is_open'),
+    Output('graph-styled-annotations', 'figure', allow_duplicate=True),
+    [Input('import-image', 'contents'),
+     Input('fermer_modal', 'n_clicks'),
+     Input('confirmer_modal', 'n_clicks')],
+    [State('graph-styled-annotations', 'figure'),
+     State('import-image', 'filename'),
+     State('modal', 'is_open')],
+    prevent_initial_call=True
+)
+def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename, current_fig):
+    if contenu_img is not None and is_open is False:
+        return True, current_fig
+    
+    if cancel_clicks:
+        return False, current_fig
+    
+    if confirm_clicks:
+        save_img(contenu_img, filename)
+        img = io.imread(os.path.join(dossier_img, filename))
+        fig = px.imshow(img)
+        fig.update_layout(
+            dragmode="drawrect",
+            newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+        )
+        return False, fig
+    
+    return is_open, current_fig
+
+# Callback liée au bouton Valider l'annotation
+@callback(
+    Output('graph-styled-annotations', 'figure'), 
+    Output('user-name-store', 'data', allow_duplicate=True), 
+    Input('bouton_valider', 'n_clicks'), 
+    State('graph-styled-annotations', 'relayoutData'), 
+    State('import-image', 'filename'), 
+    State('user-name-store', 'data'), 
+    prevent_initial_call=True 
+)
+def valider_annotation(n_clicks, relayout_data, filename, user_name):
+    if n_clicks:
+        if user_name:
+            annotation_id = str(uuid.uuid4())
+            annotation_data = {
+                'id': annotation_id,
+                'annotateur_nom': user_name,
+                'nom_image': filename,
+                'details_annotations': relayout_data
+            }
+
+            # Appeler la fonction pour sauvegarder l'annotation
+            save_annotations(annotations_file, annotation_data)
+
+            print(f"Relayout data: {relayout_data}")  # Log pour débogage
+
+            # Vérifier si l'annotation a bien été sauvegardée
+            with open(annotations_file, 'r') as f:
+                saved_annotations = json.load(f)
+                print(f"Annotations actuelles : {saved_annotations}")  # Log pour débogage
+
+        return dash.no_update
+
+    return dash.no_update
+
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\pages\login.py`:
+
+```py
+import dash
+from dash import dcc, html, Input, Output, callback, State
+import dash_bootstrap_components as dbc
+import json
+import os
+
+dash.register_page(__name__, path='/') # '/' sert à faire la page d'accueil
+
+# Liste des annotateurs déjà connus
+data_users = './data/users.json'
+
+def load_users():
+    if os.path.exists(data_users):
+        with open(data_users, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    return []
+
+# Fonction pour sauvegarder les utilisateurs
+def save_users(users):
+    with open(data_users, 'w', encoding='utf-8') as file:
+        json.dump(users, file, indent=4)
+
+users = load_users()
+
+def generate_user_id():
+    if users:
+        return max(user['id'] for user in users) + 1
+    return 1
+
+layout = dbc.Container(
+        [
+            
+
+            dbc.Row(
+                dbc.Col(
+                    html.H1("Bienvenue sur l'interface d'annotation", className="text-center mt-5")
+                )
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        dbc.Card(
+                            [
+                                dbc.CardHeader("Identifiez-vous"),
+                                dbc.CardBody(
+                                    [
+                                        html.H5("Sélectionnez un utilisateur ou ajoutez-en un nouveau", className="card-title"),
+                                        dcc.Dropdown(id='user-dropdown', 
+                                                     options=[{'label': user['name'], 'value': user['id']} for user in users],
+                                                     placeholder="Sélectionnez votre nom",
+                                                     className="mb-3"),
+                                        dbc.Input(id='new-user', type='text', 
+                                                  placeholder='Ou entrez un nouveau nom..',
+                                                  className="mb-3"),
+                                        dbc.Button('Se connecter', id='start-button', color='primary', 
+                                                   n_clicks=0, className='d-grid gap-2 col-6 mx-auto'), # Centrage du bouton grâce à la grille CSS
+                                        html.Div(id='user-message', className='mt-3'),
+                                        html.Div(className="mt-3") # Ajout d'un peu d'espace en bas de la card
+                                    ]
+                                )
+                            ],
+                            className="shadow-lg p-3 mb-2 bg-white rounded" # Ombrage + Marge Basse + Bord rond blanc
+                        ),
+                        width=6, # Centrer au milieu de la page
+                        className="offset-md-3"  # Centre la colonne dans la page
+                    )
+                ],
+                className="mt-5"
+            ),
+            dbc.Row(
+                dbc.Col(
+                    html.Footer([
+                        dcc.Markdown("""
+                            **© 2024 Projet d'annotation - Dash**
+                                     
+                            Contributeurs du projet : Thibault DAGUIN, Vadim MARTIN, Maël CHAINE, Manon BONNAUD-DUBOIS
+                            """)
+                    ],
+                        className="text-center mt-5"
+                    )
+                )
+            )
+        ],
+        fluid=False
+    )
+
+@callback(
+    Output('user-dropdown', 'options'),
+    Output('user-message', 'children'),
+    Output('user-name-store', 'data'),
+    Output('url', 'href'),
+    Input('start-button', 'n_clicks'),
+    State('new-user', 'value'),
+    State('user-dropdown', 'value')
+)
+
+def add_new_user(n_clicks, new_user, selected_user):
+    if n_clicks > 0:
+        if new_user:
+            # Vérifier si l'utilisateur existe déjà
+            if any(user['name'] == new_user for user in users):
+                return [{'label': user['name'], 'value': user['id']} for user in users], "L'utilisateur existe déjà.", None, dash.no_update
+            
+            # Ajouter le nouvel utilisateur
+            new_user_id = generate_user_id()
+            new_user_dict = {'id': new_user_id, 'name': new_user}
+            users.append(new_user_dict)
+            save_users(users)
+            
+            updated_options = [{'label': user['name'], 'value': user['id']} for user in users]
+            return updated_options, f"Nouvel utilisateur {new_user_dict['name']} ajouté.", new_user_dict['name'], '/accueil'
+        
+        if selected_user:  # Si un utilisateur est sélectionné
+            user_name = next((user['name'] for user in users if user['id'] == selected_user), None)
+            return [{'label': user['name'], 'value': user['id']} for user in users], f"Vous êtes loggé en tant que {user_name}.", user_name, '/accueil'
+
+    return (
+        [{'label': user['name'], 'value': user['id']} for user in users],
+        html.Div([
+            html.I(className="fas fa-exclamation-circle text-danger me-2"),  # Icône d'exclamation rouge
+            "Vous n'êtes pas loggé."
+        ], className='d-flex align-items-center'),  # Aligne l'icône et le texte
+        None,
+        dash.no_update
+    )
+
+def on_login(n_clicks, new_user, selected_user):
+    if n_clicks > 0:
+        if selected_user:
+            return selected_user, f"Vous êtes loggé en tant que {next(user['name'] for user in users if user['id'] == selected_user)}."
+        elif new_user:
+            return new_user, f"Vous êtes loggé en tant que {new_user}."
+    return None, "Vous n'êtes pas loggé."
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\pages\stats.py`:
+
+```py
+import dash
+from dash import html
+
+dash.register_page(__name__)
+
+layout = html.Div([
+    html.H1("C'est la page des stats"),
+    html.Div("C'est la page des stats"),
+])
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\requirements.txt`:
+
+```txt
+dash==2.11.0
+dash-bootstrap-components
+plotly
+scikit-image==0.20.0
+Pillow==9.5.0
+scikit-image
+plotly_express
+numpy
+```
+
+`\\?\J:\BUT SD\S5\Projet_Dash\utile.py`:
+
+```py
+def update_user_text(user_name):
+    if user_name:
+        return f"Vous êtes loggé en tant que {user_name}."
+    return "Vous n'êtes pas loggé."
+
+```
