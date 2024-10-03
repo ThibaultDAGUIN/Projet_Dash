@@ -1,3 +1,49 @@
 [
-    
+  {
+    "id": 1,
+    "annotateur": "Vadim",
+    "date": "2024-10-03",
+    "reviewer": "",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 29.316129032258065,
+        "y0": 57.91381048387097,
+        "x1": 450.56451612903226,
+        "y1": 216.1686491935484
+      }
+    ]
+  }
 ]

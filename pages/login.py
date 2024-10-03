@@ -33,7 +33,7 @@ layout = dbc.Container(
 
             dbc.Row(
                 dbc.Col(
-                    html.H1("Bienvenue sur l'interface d'annotation", className="text-center mt-5")
+                    html.H1("Bienvenue sur l'interface d'annotation du groupe M2VT", className="text-center mt-5")
                 )
             ),
             dbc.Row(
@@ -45,16 +45,16 @@ layout = dbc.Container(
                                 dbc.CardBody(
                                     [
                                         html.H5("Sélectionnez un utilisateur ou ajoutez-en un nouveau", className="card-title"),
-                                        dcc.Dropdown(id='user-dropdown', 
+                                        dcc.Dropdown(id='user_dropdown', 
                                                      options=[{'label': user['name'], 'value': user['id']} for user in users],
                                                      placeholder="Sélectionnez votre nom",
                                                      className="mb-3"),
-                                        dbc.Input(id='new-user', type='text', 
+                                        dbc.Input(id='new_user', type='text', 
                                                   placeholder='Ou entrez un nouveau nom..',
                                                   className="mb-3"),
-                                        dbc.Button('Se connecter', id='start-button', color='primary', 
+                                        dbc.Button('Se connecter', id='start_button', color='primary', 
                                                    n_clicks=0, className='d-grid gap-2 col-6 mx-auto'), # Centrage du bouton grâce à la grille CSS
-                                        html.Div(id='user-message', className='mt-3'),
+                                        html.Div(id='user_message', className='mt-3'),
                                         html.Div(className="mt-3") # Ajout d'un peu d'espace en bas de la card
                                     ]
                                 )
@@ -79,55 +79,74 @@ layout = dbc.Container(
                         className="text-center mt-5"
                     )
                 )
-            )
+            ),
+            dcc.Store(id='user_name_store', storage_type='local'),  # Pour stocker le nom d'utilisateur en cours sur la session
         ],
         fluid=False
     )
 
 @callback(
-    Output('user-dropdown', 'options'),
-    Output('user-message', 'children'),
-    Output('user-name-store', 'data'),
-    Output('url', 'href'),
-    Input('start-button', 'n_clicks'),
-    State('new-user', 'value'),
-    State('user-dropdown', 'value')
+    Output('user_dropdown', 'options'),
+    Input('user_dropdown', 'value'),
 )
 
-def add_new_user(n_clicks, new_user, selected_user):
+def update_user_dropdown(selected_user):
+    # Mettre à jour la liste des utilisateurs
+    users = load_users()
+    return [{'label': user['name'], 'value': user['id']} for user in users]
+
+@callback(
+    Output('user_message', 'children'), # Message de connexion
+    Output('user_name_store', 'data'), # Stocker le nom d'utilisateur
+    Output('url', 'href'), # Redirection vers la page d'accueil
+    Input('start_button', 'n_clicks'), # Clic sur le bouton de connexion
+    State('new_user', 'value'), # Valeur du nouvel utilisateur
+    State('user_dropdown', 'value') # Valeur de l'utilisateur sélectionné
+)
+
+def gestion_connexion(n_clicks, new_user, selected_user):
+    # Gère la connexion d'un utilisateur ou d'un nouvel utilisateur
     if n_clicks > 0:
         if new_user:
-            # Vérifier si l'utilisateur existe déjà
-            if any(user['name'] == new_user for user in users):
-                return [{'label': user['name'], 'value': user['id']} for user in users], "L'utilisateur existe déjà.", None, dash.no_update
-            
-            # Ajouter le nouvel utilisateur
-            new_user_id = generate_user_id()
-            new_user_dict = {'id': new_user_id, 'name': new_user}
-            users.append(new_user_dict)
-            save_users(users)
-            
-            updated_options = [{'label': user['name'], 'value': user['id']} for user in users]
-            return updated_options, f"Nouvel utilisateur {new_user_dict['name']} ajouté.", new_user_dict['name'], '/accueil'
+            return add_new_user(new_user)
         
-        if selected_user:  # Si un utilisateur est sélectionné
-            user_name = next((user['name'] for user in users if user['id'] == selected_user), None)
-            return [{'label': user['name'], 'value': user['id']} for user in users], f"Vous êtes loggé en tant que {user_name}.", user_name, '/accueil'
-
-    return (
-        [{'label': user['name'], 'value': user['id']} for user in users],
-        html.Div([
-            html.I(className="fas fa-exclamation-circle text-danger me-2"),  # Icône d'exclamation rouge
-            "Vous n'êtes pas loggé."
-        ], className='d-flex align-items-center'),  # Aligne l'icône et le texte
-        None,
-        dash.no_update
-    )
-
-def on_login(n_clicks, new_user, selected_user):
-    if n_clicks > 0:
         if selected_user:
-            return selected_user, f"Vous êtes loggé en tant que {next(user['name'] for user in users if user['id'] == selected_user)}."
-        elif new_user:
-            return new_user, f"Vous êtes loggé en tant que {new_user}."
-    return None, "Vous n'êtes pas loggé."
+            return select_existing_user(selected_user)
+    
+    return not_connected(), None, dash.no_update
+
+def add_new_user(new_user):
+    # Ajoute un nouvel utilisateur
+    users = load_users()
+
+    # Vérifier si l'utilisateur existe déjà
+    if any(user['name'] == new_user for user in users):
+        return "L'utilisateur existe déjà.", None, dash.no_update
+    
+    # Ajouter le nouvel utilisateur
+    new_user_id = generate_user_id()
+    new_user_data = {
+        'id': new_user_id,
+        'name': new_user
+        }
+    users.append(new_user_data)
+    save_users(users)
+
+    return f"Nouvel utilisateur {new_user_data['name']} ajouté.", new_user_data['name'], '/accueil'
+
+def select_existing_user(selected_user):
+    # Retourne les infos d'un utilisateur existant
+    users = load_users()
+    user_name = next((user['name'] for user in users if user['id'] == selected_user), None)
+    return f"Vous êtes loggé en tant que {user_name}.", user_name, '/accueil'
+
+def not_connected():
+    # Retourne un message si l'utilisateur n'est pas connecté
+    return html.Div([
+        html.I(className="fas fa-exclamation-circle text-danger me-2"),  # Icône d'exclamation rouge
+        "Vous n'êtes pas loggé."
+    ], className='d-flex align-items-center')
+
+def afficher_message_loggé():
+    # Affiche un message si l'utilisateur est connecté
+    return html.Div(id='user_status', className='text-right mt-2')
