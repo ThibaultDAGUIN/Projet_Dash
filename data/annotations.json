@@ -1,7 +1,8 @@
 [
     {
-        "id": "car425.jpg",
-        "annotateur": "Anonyme",
+        "id": "1",
+        "image_name":"car426.jpg",
+        "annotateur": "Vadim",
         "date": "2024-10-03",
         "reviewer": "",
         "annotations": [
@@ -45,5 +46,53 @@
             "y1": 279.2173387096774
         }
         ]
-    }
+    },
+    {
+      "id": "2",
+      "image_name":"car425.jpg",
+      "annotateur": "Thibault",
+      "date": "2024-10-03",
+      "reviewer": "",
+      "annotations": [
+        {
+          "editable": true,
+          "visible": true,
+          "showlegend": false,
+          "legend": "legend",
+          "legendgroup": "",
+          "legendgrouptitle": {
+            "text": "",
+            "font": {
+              "weight": "normal",
+              "style": "normal",
+              "variant": "normal",
+              "lineposition": "none",
+              "textcase": "normal",
+              "shadow": "none"
+            }
+          },
+          "legendrank": 1000,
+          "label": {
+            "text": "",
+            "texttemplate": ""
+          },
+          "xref": "x",
+          "yref": "y",
+          "layer": "above",
+          "opacity": 0.3,
+          "line": {
+            "color": "black",
+            "width": 2,
+            "dash": "solid"
+          },
+          "fillcolor": "cyan",
+          "fillrule": "evenodd",
+          "type": "rect",
+          "x0": 72.38387096774194,
+          "y0": 56.99798387096774,
+          "x1": 383.28709677419357,
+          "y1": 279.2173387096774
+      }
+      ]
+  }
 ]
