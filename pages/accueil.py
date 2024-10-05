@@ -16,7 +16,7 @@ layout = html.Div(
                 dbc.Col(
                     dbc.Button(
                         [html.I(className="bi bi-pencil-square me-2"), "Annoter"],
-                        href="/contribuer",
+                        href="/annoter",
                         color="primary",
                         className="btn-lg",
                         style={
