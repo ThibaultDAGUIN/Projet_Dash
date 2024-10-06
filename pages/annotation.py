@@ -22,11 +22,11 @@ def prepare_table_data():
     
     for annotation in annotations:
         table_data.append({
-            'Image Name': annotation.get('nom_image', 'N/A'),
+            'Nom Image': annotation.get('nom_image', 'N/A'),
             'Date': annotation.get('date_annotation', 'N/A'),
             'Annotateur': annotation.get('annotateur', 'Anonyme'),
             'Reviewer': annotation.get('reviewer', 'N/A'),
-            'Review Date': annotation.get('date_review', 'N/A'),
+            'Date Review': annotation.get('date_review', 'N/A'),
             'id': annotation.get('id')
         })
     
@@ -36,11 +36,11 @@ def prepare_table_data():
     return table_data
 
 columns = [
-    {'name': 'Image Name', 'id': 'Image Name'},
+    {'name': 'Nom Image', 'id': 'Image Name'},
     {'name': 'Date', 'id': 'Date'},
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
-    {'name': 'Review Date', 'id': 'Review Date'},
+    {'name': 'Date Review', 'id': 'Review Date'},
     {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown pour Verifier
 ]
 
@@ -74,7 +74,7 @@ layout = html.Div([
 def update_table(_):
     """Callback pour mettre à jour le DataTable avec les dernières données d'annotation."""
     return [
-            {**row, 'Verifier': 'Cliquez la cellule pour vérifier'}
+            {**row, 'Verifier': 'Cliquez la cellule pour vérifier l\'annotation'}
         for row in prepare_table_data()
     ]
 

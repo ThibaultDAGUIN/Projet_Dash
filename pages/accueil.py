@@ -29,7 +29,7 @@ layout = html.Div(
                 dbc.Col(
                     dbc.Button(
                         [html.I(className="bi bi-check-circle me-2"), "Valider"],
-                        href="/liste",
+                        href="/annotation",
                         color="success",
                         className="btn-lg",
                         style={
