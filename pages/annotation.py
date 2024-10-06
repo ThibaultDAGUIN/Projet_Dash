@@ -41,8 +41,6 @@ columns = [
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Review Date', 'id': 'Review Date'},
-    {'name': 'Marque', 'id': 'Marque'},
-    {'name': 'Couleur', 'id': 'Couleur'},
     {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown for Verifier
 ]
 
