@@ -49,12 +49,3 @@ Projet_Dash/
 ├── requirements.txt    # Liste des dépendances Python
 └── README.md           # Documentation de l'application
 ```
-
-### Contribution
-
-N'hésitez pas à forker ce projet et à contribuer en créant des pull requests pour toute amélioration ou correction de bug.
-
-### Licence
-
-Ce projet est sous licence [MIT](LICENSE).
-```
