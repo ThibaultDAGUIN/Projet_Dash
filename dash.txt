@@ -1,0 +1,3605 @@
+Project Path: Projet_Dash
+
+Source Tree:
+
+```
+Projet_Dash
+├── app.py
+├── data
+│   ├── annotations.json
+│   ├── cars
+│   │   ├── 208.jpg
+│   │   ├── car425.jpg
+│   │   ├── car426.jpg
+│   │   ├── car427.jpg
+│   │   ├── car428.jpg
+│   │   ├── car429.jpg
+│   │   ├── car430.jpg
+│   │   ├── car431.jpg
+│   │   ├── car432.jpg
+│   │   ├── car433.jpg
+│   │   ├── car434.jpg
+│   │   ├── car435.jpg
+│   │   ├── car436.jpg
+│   │   ├── flashmcqueen.jpeg
+│   │   ├── mazdacx3.jpg
+│   │   ├── porsche 911-gt3rs.jpeg
+│   │   └── toyota-yaris.jpg
+│   ├── data_fictive.csv
+│   └── users.json
+├── pages
+│   ├── accueil.py
+│   ├── annotation.py
+│   ├── annoter.py
+│   ├── apropos.py
+│   ├── login.py
+│   ├── stats.py
+│   ├── verify.py
+│   └── __pycache__
+│       ├── accueil.cpython-311.pyc
+│       ├── accueil.cpython-312.pyc
+│       ├── annotation.cpython-311.pyc
+│       ├── annotation.cpython-312.pyc
+│       ├── annoter.cpython-311.pyc
+│       ├── annoter.cpython-312.pyc
+│       ├── apropos.cpython-311.pyc
+│       ├── apropos.cpython-312.pyc
+│       ├── contexte.cpython-312.pyc
+│       ├── login.cpython-311.pyc
+│       ├── login.cpython-312.pyc
+│       ├── stats.cpython-311.pyc
+│       ├── stats.cpython-312.pyc
+│       ├── truc.cpython-312.pyc
+│       └── verify.cpython-311.pyc
+└── requirements.txt
+
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\app.py`:
+
+```py
+import dash
+from dash import dcc, html, callback, Input, Output
+import dash_bootstrap_components as dbc
+
+app = dash.Dash(__name__, use_pages=True, external_stylesheets=[
+    dbc.themes.BOOTSTRAP, 
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Roboto&display=swap",
+    ])
+
+app.layout = html.Div([
+    dcc.Location(id='url', refresh=True),
+    dbc.NavbarSimple(
+        children=[
+            dbc.NavLink('Accueil', href='/accueil'),
+            dbc.NavLink('À propos', href='/apropos'),
+            dbc.NavLink('Interface d\'annotation', href='/annoter'),
+            dbc.NavLink('Liste des annotations', href='/annotation'),
+            dbc.NavLink('Statistiques', href='/stats'),
+            html.Span(id='user_status', className='text-light align-self-center', style={'font-size': '0.9rem', 'marginLeft': '100px', 'marginRight':'20px'}),
+            dbc.Button('Déconnexion', color='danger', outline=True, className='text-light align-self-center', style={'font-size': '0.8rem'}, id='logout_button', n_clicks=0),
+        ],
+        brand="Groupe Dash McQueen",
+        color="#333333",
+        dark=True,
+        id='navbar',
+    ),
+    dash.page_container,
+    dcc.Store(id='user_name_store', storage_type='local')  # Pour stocker le nom d'utilisateur en cours sur la session
+])
+
+@callback(
+    Output('user_status', 'children', allow_duplicate=True),
+    Input('user_name_store', 'data'),
+    prevent_initial_call='True'
+)
+
+def afficher_message_loggé(user_name):
+    if user_name:
+        return f"Vous êtes loggé en tant que {user_name}."
+    return "Vous n'êtes pas loggé."
+
+@callback(
+    Output('navbar', 'style'),
+    Input('url', 'pathname'),
+)
+
+def toggle_navbar(pathname):
+    # On masque la navbar sur la page de login
+    if pathname == '/':
+        return {'display': 'none'}
+    return {'display': 'block'}
+
+@callback(
+    Output('url', 'href', allow_duplicate=True),
+    Input('logout_button', 'n_clicks'),
+    prevent_initial_call=True
+)
+
+def handle_logout(n_clicks):
+    if n_clicks > 0:
+        return '/'  # Redirection vers la page de connexion
+    return dash.no_update
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\data\annotations.json`:
+
+```json
+[
+  {
+    "id": 1,
+    "nom_image": "car436.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Dacia",
+    "couleur": "Bleu",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 55.42578814106604,
+        "y0": 120.60534274193549,
+        "x1": 422.3644978184855,
+        "y1": 284.43437500000005
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nom_image": "car430.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 66.26774193548387,
+        "y0": 149.7592741935484,
+        "x1": 389.40322580645164,
+        "y1": 263.9270161290322
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nom_image": "toyota-yaris.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Toyota",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 318.43552915511583,
+        "y0": 457.8659274193548,
+        "x1": 1512.2742388325348,
+        "y1": 1110.4465725806451
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nom_image": "car427.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 84.19356807585687,
+        "y0": 153.41683467741936,
+        "x1": 411.709697108115,
+        "y1": 302.2878024193548
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nom_image": "car431.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mercedes",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 23.561288550592234,
+        "y0": 153.68840725806453,
+        "x1": 457.4096756473664,
+        "y1": 339.29808467741935
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nom_image": "mazdacx3.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mazda",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 143.24845246345765,
+        "y0": 327.8695564516129,
+        "x1": 1077.1452266570059,
+        "y1": 806.7147177419354
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nom_image": "car429.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 398.57741935483875,
+        "y0": 108.98508064516129,
+        "x1": 146.7967741935484,
+        "y1": 223.15282258064516
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nom_image": "car433.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 432.99677025579626,
+        "y0": 53.90665322580645,
+        "x1": 15.977415417086688,
+        "y1": 234.95826612903224
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "nom_image": "car426.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "BMW",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 392.4612903225807,
+        "y0": 98.7915322580645,
+        "x1": 74.42258064516129,
+        "y1": 229.26895161290324
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "nom_image": "car427.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Dacia",
+    "couleur": "Bleu",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 58.29998168945314,
+        "y0": 128.26985887096777,
+        "x1": 420.44836878622743,
+        "y1": 284.43437500000005
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "nom_image": "car431.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "BMW",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 458.5483853247857,
+        "y0": 162.79808467741935,
+        "x1": 40.64193371188256,
+        "y1": 334.7432459677419
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "nom_image": "car426.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "BMW",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 66.26774193548387,
+        "y0": 97.77217741935483,
+        "x1": 394.5,
+        "y1": 235.3850806451613
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "nom_image": "car429.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 394.5,
+        "y0": 103.8883064516129,
+        "x1": 151.8935483870968,
+        "y1": 227.2302419354839
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "nom_image": "car433.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Ford",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 440.7193509009575,
+        "y0": 45.32600806451613,
+        "x1": 20.26773799773185,
+        "y1": 248.68729838709677
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "nom_image": "porsche 911-gt3rs.jpeg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Porsche",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 23.699996062247976,
+        "y0": 56.48084677419354,
+        "x1": 433.8548347719253,
+        "y1": 232.38407258064515
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "nom_image": "flashmcqueen.jpeg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 48.84191028225807,
+        "y0": 109.88064516129033,
+        "x1": 966.7257812500002,
+        "y1": 466.6290322580645
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "nom_image": "car430.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Peugeot",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 97.86774193548388,
+        "y0": 137.52701612903226,
+        "x1": 385.32580645161295,
+        "y1": 271.0625
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "nom_image": "car431.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mercedes",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 31.53225629252772,
+        "y0": 150.27227822580647,
+        "x1": 457.4096756473664,
+        "y1": 342.7142137096774
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "nom_image": "car428.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Dacia",
+    "couleur": "Bleu",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 67.88062685074347,
+        "y0": 114.85695564516129,
+        "x1": 417.57417523784034,
+        "y1": 283.47631048387103
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "nom_image": "car425.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 41.82260033392138,
+        "y0": 90.43296370967742,
+        "x1": 351.01614872101817,
+        "y1": 340.078125
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "nom_image": "car436.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mercedes",
+    "couleur": "Vert",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 70.75482039913057,
+        "y0": 136.89243951612906,
+        "x1": 418.5322397539694,
+        "y1": 286.35050403225813
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "nom_image": "208.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Peugeot",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 224.12577613092242,
+        "y0": 173.85332661290323,
+        "x1": 696.9483567760839,
+        "y1": 452.38881048387105
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "nom_image": "toyota-yaris.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Toyota",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 326.11294850995455,
+        "y0": 473.2207661290322,
+        "x1": 1481.5645614131802,
+        "y1": 1125.8014112903224
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "nom_image": "car435.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Citroen",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 92.66774626701107,
+        "y0": 135.6405241935484,
+        "x1": 216.24193981539818,
+        "y1": 249.08568548387098
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "nom_image": "mazdacx3.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mazda",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 146.22264601184474,
+        "y0": 327.8695564516129,
+        "x1": 1074.171033108619,
+        "y1": 812.6631048387096
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "nom_image": "car427.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mercedes",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 89.91937452746978,
+        "y0": 136.23941532258067,
+        "x1": 411.709697108115,
+        "y1": 306.8684475806451
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "nom_image": "car431.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mercedes",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 40.64193371188256,
+        "y0": 144.57872983870968,
+        "x1": 459.68709500220507,
+        "y1": 344.9916330645161
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "nom_image": "porsche 911-gt3rs.jpeg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Dacia",
+    "couleur": "Bleu",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 59.258046205582176,
+        "y0": 111.02469758064517,
+        "x1": 422.3644978184855,
+        "y1": 278.68598790322585
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "nom_image": "car435.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Citroen",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 94.69355271862398,
+        "y0": 134.62762096774193,
+        "x1": 223.33226239604332,
+        "y1": 246.04697580645163
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "nom_image": "car425.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 59.0000196887601,
+        "y0": 108.75554435483872,
+        "x1": 353.30647130166335,
+        "y1": 324.04586693548384
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "nom_image": "car427.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 80.75808420488913,
+        "y0": 120.20715725806453,
+        "x1": 428.88711646295366,
+        "y1": 301.14264112903226
+      }
+    ]
+  },
+  {
+    "id": 32,
+    "nom_image": "car428.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Porsche",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 21.983867029989913,
+        "y0": 146.57762096774192,
+        "x1": 197.02902832031245,
+        "y1": 241.8227822580645
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "nom_image": "car432.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 15.55483870967742,
+        "y0": 79.32026209677419,
+        "x1": 436.0387096774194,
+        "y1": 221.5202620967742
+      }
+    ]
+  },
+  {
+    "id": 34,
+    "nom_image": "car429.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 174.3193548387097,
+        "y0": 83.50120967741935,
+        "x1": 395.5193548387097,
+        "y1": 228.24959677419355
+      }
+    ]
+  },
+  {
+    "id": 35,
+    "nom_image": "car433.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 17.693544449344753,
+        "y0": 44.4679435483871,
+        "x1": 434.7128992880543,
+        "y1": 234.10020161290322
+      }
+    ]
+  },
+  {
+    "id": 36,
+    "nom_image": "car425.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 42.96776162424396,
+        "y0": 111.04586693548389,
+        "x1": 349.8709874306956,
+        "y1": 335.4974798387097
+      }
+    ]
+  },
+  {
+    "id": 37,
+    "nom_image": "car426.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "BMW",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 54.035483870967745,
+        "y0": 78.40443548387097,
+        "x1": 395.5193548387097,
+        "y1": 235.3850806451613
+      }
+    ]
+  },
+  {
+    "id": 38,
+    "nom_image": "car432.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 33.903225806451616,
+        "y0": 86.96542338709678,
+        "x1": 434.50967741935483,
+        "y1": 219.22671370967743
+      }
+    ]
+  },
+  {
+    "id": 39,
+    "nom_image": "car434.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mazda",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 11.73225806451613,
+        "y0": 64.02993951612903,
+        "x1": 448.27096774193546,
+        "y1": 213.87510080645163
+      }
+    ]
+  },
+  {
+    "id": 40,
+    "nom_image": "car432.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 34.66774193548387,
+        "y0": 79.32026209677419,
+        "x1": 429.15806451612906,
+        "y1": 225.3428427419355
+      }
+    ]
+  },
+  {
+    "id": 41,
+    "nom_image": "flashmcqueen.jpeg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-06",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "visible": true,
+        "showlegend": false,
+        "legend": "legend",
+        "legendgroup": "",
+        "legendgrouptitle": {
+          "text": "",
+          "font": {
+            "weight": "normal",
+            "style": "normal",
+            "variant": "normal",
+            "lineposition": "none",
+            "textcase": "normal",
+            "shadow": "none"
+          }
+        },
+        "legendrank": 1000,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 39.55158770161291,
+        "y0": 137.7516129032258,
+        "x1": 970.4419102822582,
+        "y1": 474.06129032258065
+      }
+    ]
+  },
+  {
+    "id": 42,
+    "image_name": "car430.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "BMW",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 57.093548387096774,
+        "y0": 130.38515506867438,
+        "x1": 404.6935483870968,
+        "y1": 275.13354216544855
+      }
+    ]
+  },
+  {
+    "id": 43,
+    "image_name": "car430.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "BMW",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 9.996992738785279,
+        "y0": 143.13999476278983,
+        "x1": 203.06150886781748,
+        "y1": 250.39805927891885
+      }
+    ]
+  },
+  {
+    "id": 44,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": null,
+    "couleur": null,
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 62.190322580645166,
+        "y0": 138.53999377835183,
+        "x1": 395.5193548387097,
+        "y1": 269.01741313319053
+      }
+    ]
+  },
+  {
+    "id": 45,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Citroen",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 88.80349928332916,
+        "y0": 113.3290252685547,
+        "x1": 419.755112186555,
+        "y1": 330.909670429845
+      }
+    ]
+  },
+  {
+    "id": 46,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Citroen",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 46.43253154139366,
+        "y0": 90.42579946210309,
+        "x1": 353.3357573478453,
+        "y1": 345.79676720403853
+      }
+    ]
+  },
+  {
+    "id": 47,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Autre",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 133.5451612903226,
+        "y0": 64.12709055254535,
+        "x1": 412.8483870967742,
+        "y1": 245.57225184286796
+      }
+    ]
+  },
+  {
+    "id": 48,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Autre",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 128.4483870967742,
+        "y0": 65.14644539125504,
+        "x1": 406.73225806451615,
+        "y1": 231.30128410093246
+      }
+    ]
+  },
+  {
+    "id": 49,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Toyota",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 15.612769736013103,
+        "y0": 110.41031563051286,
+        "x1": 459.70954392956145,
+        "y1": 344.98450917889994
+      }
+    ]
+  },
+  {
+    "id": 50,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Autre",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 249.39990628150193,
+        "y0": 427.1322346348916,
+        "x1": 1550.722486926663,
+        "y1": 1110.4225572155367
+      }
+    ]
+  },
+  {
+    "id": 51,
+    "image_name": "car430.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "marque": "Ford",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 15.14537983555947,
+        "y0": 29.01741411762853,
+        "x1": 450.1840895129787,
+        "y1": 258.12063992408014
+      }
+    ]
+  }
+]
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\data\data_fictive.csv`:
+
+```csv
+idAnno;TimeStamp;User;idImg;Trace;Couleur;Marque;Reviewer
+id1;28/09/2024 09:00;Thibault;car429.jpg;;Rouge;Mercedes;Maël
+id2;29/09/2024 10:00;Vadim;car436.jpg;;Noir;Aston Martin;Thibault
+id3;30/09/2024 11:00;Mael;car428.jpg;;Bleu;Kia;
+id4;01/10/2024 12:00;Manon;car430.jpg;;Gris;Renault;Thibault
+id5;02/10/2024 13:00;Thibault;car428.jpg;;Bleu;Mercedes;Vadim
+id6;03/10/2024 14:00;Vadim;car435.jpg;;Rouge;Aston Martin;Thibault
+id7;04/10/2024 15:00;Mael;car425.jpg;;Noir;Kia;
+id8;05/10/2024 16:00;Manon;car430.jpg;;Bleu;Renault;Vadim
+id9;06/10/2024 17:00;Thibault;car433.jpg;;Gris;Mercedes;Manon
+id10;07/10/2024 18:00;Vadim;car425.jpg;;Bleu;Aston Martin;Manon
+id11;08/10/2024 19:00;Mael;car429.jpg;;Rouge;Kia;Vadim
+id12;09/10/2024 20:00;Manon;car429.jpg;;Noir;Renault;Mael
+id13;10/10/2024 21:00;Thibault;car428.jpg;;Bleu;Mercedes;Thibault
+id14;11/10/2024 22:00;Vadim;car429.jpg;;Gris;Aston Martin;
+id15;12/10/2024 23:00;Mael;car428.jpg;;Bleu;Kia;Manon
+id16;14/10/2024 00:00;Manon;car429.jpg;;Rouge;Renault;
+id17;15/10/2024 01:00;Thibault;car432.jpg;;Noir;Mercedes;Vadim
+id18;16/10/2024 02:00;Vadim;car431.jpg;;Bleu;Aston Martin;Manon
+id19;17/10/2024 03:00;Mael;car431.jpg;;Gris;Kia;
+id20;18/10/2024 04:00;Manon;car428.jpg;;Bleu;Renault;Thibault
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\data\users.json`:
+
+```json
+[
+    {
+        "id": 1,
+        "name": "Thibault"
+    },
+    {
+        "id": 2,
+        "name": "Vadim"
+    },
+    {
+        "id": 3,
+        "name": "Manon"
+    },
+    {
+        "id": 4,
+        "name": "Ma\u00ebl"
+    }
+]
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\accueil.py`:
+
+```py
+from dash import html, dcc
+import dash
+import dash_bootstrap_components as dbc
+
+# Enregistrer la page dans le registre avec le décorateur
+dash.register_page(__name__, path='/accueil', name='Accueil', order=1)
+
+layout = html.Div(
+    style={'margin': '20px'},
+    children=[
+        html.H1("Bienvenue dans notre application d'annotation", style={'text-align': 'center', 'margin-bottom': '40px'}),
+        html.H2("Que souhaitez-vous faire ?", style={'text-align': 'center', 'margin-bottom': '40px'}),
+        dbc.Row(
+            [
+                dbc.Col(
+                    dbc.Button(
+                        [html.I(className="bi bi-pencil-square me-2"), "Annoter"],
+                        href="/annoter",
+                        color="primary",
+                        className="btn-lg",
+                        style={
+                            'width': '200px', 'height': '200px', 'font-size': '24px',
+                            'display': 'flex', 'align-items': 'center', 'justify-content': 'center',
+                            'text-align': 'center'
+                        }
+                    ),
+                    width="auto"
+                ),
+                dbc.Col(
+                    dbc.Button(
+                        [html.I(className="bi bi-check-circle me-2"), "Valider"],
+                        href="/liste",
+                        color="success",
+                        className="btn-lg",
+                        style={
+                            'width': '200px', 'height': '200px', 'font-size': '24px',
+                            'display': 'flex', 'align-items': 'center', 'justify-content': 'center',
+                            'text-align': 'center'
+                        }
+                    ),
+                    width="auto"
+                ),
+                dbc.Col(
+                    dbc.Button(
+                        [html.I(className="bi bi-bar-chart-line me-2"), "Mesurer"],
+                        href="/stats",
+                        color="danger",
+                        className="btn-lg",
+                        style={
+                            'width': '200px', 'height': '200px', 'font-size': '24px',
+                            'display': 'flex', 'align-items': 'center', 'justify-content': 'center',
+                            'text-align': 'center',
+                            'background-color': '#800000',  # Bordeaux
+                            'border-color': '#800000'
+                        }
+                    ),
+                    width="auto"
+                ),
+            ],
+            justify="center",
+        ),
+        dbc.Row(
+            dbc.Col(
+                html.Footer(
+                    dcc.Markdown(
+                        """
+                        **© 2024 Projet d'annotation - Dash**
+
+                        Contributeurs du projet : Thibault DAGUIN, Vadim MARTIN, Maël CHAINE, Manon BONNAUD-DUBOIS
+                        """
+                    ),
+                    className="text-center mt-5"
+                )
+            )
+        )
+    ]
+)
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\annotation.py`:
+
+```py
+import dash
+from dash import html, dcc, dash_table, Input, Output, State
+import json
+import os
+from datetime import datetime
+
+dash.register_page(__name__)
+
+annotations_file = './data/annotations.json'
+
+def load_annotations():
+    """Load annotations from the JSON file."""
+    if os.path.exists(annotations_file):
+        with open(annotations_file, 'r') as f:
+            return json.load(f)
+    return []
+
+def prepare_table_data():
+    """Prepare data for the DataTable from annotations."""
+    annotations = load_annotations()
+    table_data = []
+    
+    for annotation in annotations:
+        table_data.append({
+            'Image Name': annotation.get('image_name', 'N/A'),
+            'Date': annotation.get('date', 'N/A'),
+            'Annotateur': annotation.get('annotateur', 'Anonyme'),
+            'Reviewer': annotation.get('reviewer', 'N/A'),
+            'Review Date': annotation.get('review_date', 'N/A'),
+            'id': annotation.get('id')
+        })
+    
+    # Sorting the data
+    table_data.sort(key=lambda x: (x['Reviewer'] == 'N/A', x['Reviewer'], datetime.strptime(x['Date'], '%Y-%m-%d') if x['Date'] != 'N/A' else datetime.min))
+    
+    return table_data
+
+columns = [
+    {'name': 'Image Name', 'id': 'Image Name'},
+    {'name': 'Date', 'id': 'Date'},
+    {'name': 'Annotateur', 'id': 'Annotateur'},
+    {'name': 'Reviewer', 'id': 'Reviewer'},
+    {'name': 'Review Date', 'id': 'Review Date'},
+    {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown for Verifier
+    ]
+
+# Layout for the annotation page
+layout = html.Div([
+    html.H1("Liste des Annotations"),
+    html.Div("Voici la liste des annotations effectuées :"),
+    
+    dash_table.DataTable(
+        id='annotation-table',
+        columns=columns,
+        data=[
+            {**row, 'Verifier': f'<a href="/verify?id={row["id"]}">Vérifier</a>'}
+            for row in prepare_table_data()
+        ],
+        style_table={'width': '80%', 'margin': 'auto'},
+        style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'},
+        style_cell={'textAlign': 'left'},
+        page_size=10,
+    ),
+    
+    # Hidden Div for state or navigation
+    html.Div(id='hidden-div', style={'display': 'none'}),
+])
+
+# Callback to update the table dynamically
+@dash.callback(
+    Output('annotation-table', 'data'),
+    Input('annotation-table', 'data')  # Dummy input to trigger update on any change
+)
+def update_table(_):
+    """Callback to update the DataTable with the latest annotation data."""
+    return [
+            {**row, 'Verifier': 'Cliquez la cellule pour vérifier'}
+        for row in prepare_table_data()
+    ]
+
+# Callback to handle clicks on the Verifier links
+@dash.callback(
+    Output('hidden-div', 'children'),  # Using a hidden div to capture link clicks
+    Input('annotation-table', 'active_cell')
+)
+def handle_verifier_click(active_cell):
+    """Callback to handle clicks on the Verifier link."""
+    if active_cell and active_cell['column_id'] == 'Verifier':
+        row_index = active_cell['row']  # Get the row index of the clicked cell
+        
+        # Retrieve the full DataTable data
+        data = prepare_table_data()  # You can also store this in a global variable if you want
+        id_value = data[row_index]['id']  # Get the id from the corresponding row
+
+        return dcc.Location(href=f'/verify?id={id_value}', id='redirect')
+    return dash.no_update
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\annoter.py`:
+
+```py
+import dash
+from dash import dcc, html, Input, Output, callback, State
+from skimage import io
+import plotly_express as px
+import os
+import json
+import random
+import base64
+import dash_bootstrap_components as dbc
+from datetime import datetime
+
+# Define paths for images and JSON files
+dossier_img = './data/cars/'
+users_file = './data/users.json'
+annotations_file = './data/annotations.json'
+
+# Function to retrieve a random image
+def recup_img_aleatoire():
+    files = os.listdir(dossier_img)
+    images = [file for file in files if file.endswith(('png', 'jpg', 'jpeg'))]
+    if images:
+        random_image = random.choice(images)
+        return os.path.join(dossier_img, random_image)
+    return None
+
+# Function to load an image and return it with its filename
+def charger_image():
+    chemin_image = recup_img_aleatoire()
+    if chemin_image:
+        img = io.imread(chemin_image)
+        return img, os.path.basename(chemin_image)  # Return both image and filename
+    return None, None  # Return None for both if no image is found
+
+# Function to save uploaded image
+def save_img(content, filename):
+    data = content.split(",")[1]
+    img_data = base64.b64decode(data)
+    file_unique = f"{filename}"
+    filepath = os.path.join(dossier_img, file_unique)
+    with open(filepath, 'wb') as f:
+        f.write(img_data)
+    return filepath
+
+# Register the Dash app page
+dash.register_page(__name__)
+
+# Load initial image and filename
+img, filename = charger_image()
+
+if img is not None:
+    fig = px.imshow(img)
+    fig.update_layout(
+        dragmode="drawrect",
+        newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+    )
+else:
+    fig = None
+
+# Layout of the Dash app
+layout = html.Div(
+    [
+        html.H3("Interface d'annotation", className='text-center my-3'),
+        dcc.Graph(id="graph-styled-annotations", figure=fig),
+
+        # Store the filename in hidden storage
+        dcc.Store(id='filename_store', data=filename),
+
+        dcc.Upload(
+            id="import-image",
+            children=html.Div(
+                ['Glissez et déposez une image ici, ou ',
+                 html.A('sélectionnez une image')],
+                style={
+                    'borderWidth': '0.5px', 'borderStyle': 'solid', 'backgroundColor':'rgba(66, 66, 66, 0.15)',
+                    'padding': '20px', 'textAlign': 'center', 'width': '50%',
+                    'margin': '5px auto', 'cursor': 'pointer',
+                    'font-family': 'Roboto, sans-serif',
+                }
+            ),
+            multiple=False
+        ),
+
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Confirmation de l'importation"),
+                dbc.ModalBody("Voulez-vous confirmer l'importation de ce fichier ?"),
+                dbc.ModalFooter(
+                    [
+                        dbc.Button("Oui", id="confirmer_modal", color="success"),
+                        dbc.Button("Non", id="fermer_modal", color="danger", className="ms-2"),
+                    ]
+                ),
+            ],
+            id="modal",
+            is_open=False,
+        ),
+        dbc.Row(
+            [
+                dbc.Col(
+                    dbc.Button(
+                        "Valider l'annotation",
+                        id="bouton_valider",
+                        color='success',
+                        n_clicks=0,
+                    ),
+                    width='auto'
+                ),
+                
+                dbc.Col(
+                    dbc.Button(
+                        "Modifier l'annotation",
+                        id="bouton_reset",
+                        color='danger',
+                        n_clicks=0,
+                    ),
+                    width='auto'
+                ),
+            ],
+            justify='center',
+            className='my-3',
+        ),
+        html.Pre(id="annotation_data", className='my-3'),
+        dcc.Store(id='user_name_store', storage_type='local'), # Store the current user's name in the session
+    ]
+)
+
+# Callback to handle the upload modal and image display
+@callback(
+    Output('modal', 'is_open'), # Open or close the modal
+    Output('graph-styled-annotations', 'figure', allow_duplicate=True), # Update the displayed image
+    Input('import-image', 'contents'),
+    Input('fermer_modal', 'n_clicks'),
+    Input('confirmer_modal', 'n_clicks'),
+    State('modal', 'is_open'),
+    State('import-image', 'filename'),
+    State('graph-styled-annotations', 'figure'),
+    prevent_initial_call=True
+)
+def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename, current_fig):
+    # Open the modal when an image is uploaded
+    if contenu_img is not None and is_open is False:
+        return True, current_fig
+    
+    # If "No" is clicked, close the modal without doing anything
+    if cancel_clicks:
+        return False, current_fig
+    
+    # If "Yes" is clicked, save the image
+    if confirm_clicks:
+        save_img(contenu_img, filename)
+        
+        # Load the saved image to display
+        img, next_filename = charger_image()  # Get the next image and its filename
+        if img is not None:
+            fig = px.imshow(img)
+            fig.update_layout(
+                dragmode="drawrect",
+                newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+            )
+            # Update the filename in store
+            return False, fig
+
+        return False, None  # In case no next image is available
+    
+    # If no action has been taken, do not change anything
+    return is_open, current_fig
+
+# Callback to handle annotation submission
+@callback(
+    Output('annotation_data', 'children'),
+    Output('graph-styled-annotations', 'figure'),
+    Output('bouton_valider', 'disabled', allow_duplicate=True),
+    Output('filename_store', 'data'),  # Add this output to update the filename store
+    Input("bouton_valider", "n_clicks"),
+    State('graph-styled-annotations', 'relayoutData'),
+    State('user_name_store', 'data'),
+    State('filename_store', 'data'), 
+    prevent_initial_call=True
+)
+def afficher_annotation(n_clicks, relayoutData, user_name, filename):
+    if n_clicks is None and user_name:
+        return dash.no_update, dash.no_update, True, dash.no_update
+
+    if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
+        try:
+            # Load existing annotations
+            annotations_data = []
+            if os.path.exists(annotations_file):
+                with open(annotations_file, 'r') as f:
+                    annotations_data = json.load(f)
+
+            # Create a new annotation entry
+            new_annotation = {
+                'id': len(annotations_data) + 1,
+                'image_name': filename,  # Ensure this is set correctly
+                'annotateur': user_name,
+                'date': datetime.now().strftime('%Y-%m-%d'),
+                'reviewer': '',
+                "review_date": '',
+                'annotations': relayoutData['shapes']
+            }
+
+            # Append new annotation and save
+            annotations_data.append(new_annotation)
+            with open(annotations_file, 'w') as f:
+                json.dump(annotations_data, f, indent=2)
+
+            # Confirmation message
+            message = f"L'annotation réalisée par {user_name} a bien été enregistrée."
+
+            # Load the next image
+            img, next_filename = charger_image()  # Get the next image and filename
+            if img is not None:
+                fig = px.imshow(img)
+                fig.update_layout(
+                    dragmode="drawrect",
+                    newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+                )
+                
+                # Update the filename in the store
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True, next_filename
+
+            else:
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), None, True, dash.no_update
+
+        except Exception as e:
+            return html.Div("L'annotation a échoué, veuillez réessayer.", style={'font-family': 'Roboto, sans-serif'}), dash.no_update, True, dash.no_update
+
+    return html.Div("Veuillez réaliser une annotation avant de valider", className='text-center', style={'font-family': 'Roboto, sans-serif'}), dash.no_update, False, dash.no_update
+
+
+# Callback to enable/disable the validation button based on annotations
+@callback(
+    Output('bouton_valider', 'disabled'),
+    Input('graph-styled-annotations', 'relayoutData'),
+)
+def activer_bouton(relayoutData):
+    if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
+        return False
+    return True
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\apropos.py`:
+
+```py
+from dash import html, dcc
+import dash
+import dash_bootstrap_components as dbc
+
+# Enregistrer la page dans le registre avec le décorateur
+dash.register_page(__name__, path='/apropos', name='A propos', order=5)
+
+layout = html.Div(
+    style={'margin': '20px'},
+    children=[
+        # Titre
+        html.H1("À propos de nous", style={'text-align': 'center', 'margin-bottom': '30px'}),
+
+        # Description de l'équipe
+        html.H4("Qui sommes-nous ?", className="mt-4"),
+        html.P(
+            [
+                "Quatre étudiants en 3ème année de ",
+                html.A("BUT Science des Données", href="https://iutp.univ-poitiers.fr/sd/", className="text-primary"),
+                " qui ont uni leurs forces pour réaliser ce projet, à l'occasion du cours de Dash dispensé par Clément GARCIN.",
+            ],
+            className="mb-4"
+        ),
+
+        # Présentation de l'équipe
+        dbc.Row(
+            [
+                dbc.Col(
+                    dbc.Card(
+                        [
+                            html.A(
+                                dbc.CardImg(src="https://static.wikia.nocookie.net/worldofcarsdrivein/images/1/1e/Chick_Hicks.png", top=True, style={"height": "150px", "object-fit": "contain"}),
+                                href="https://www.linkedin.com/in/vadim-martin/",
+                                target="_blank"
+                            ),
+                            dbc.CardBody(
+                                [
+                                    html.H5("Vadim MARTIN", className="card-title", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                    html.P("L'atout moustachu de l'annotation !", className="card-text", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                ]
+                            )
+                        ],
+                        className="mb-2"  # Réduire la marge inférieure des cartes
+                    ),
+                    width=3
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        [
+                            html.A(
+                                dbc.CardImg(src="https://static.wikia.nocookie.net/worldofcarsdrivein/images/9/96/The_king.png", top=True, style={"height": "150px", "object-fit": "contain"}),
+                                href="https://www.linkedin.com/in/ma%C3%ABl-chaine-0996422a3/",
+                                target="_blank"
+                            ),
+                            dbc.CardBody(
+                                [
+                                    html.H5("Maël CHAINE", className="card-title", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                    html.P("Le spécialiste musclé de la validation !", className="card-text", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                ]
+                            )
+                        ],
+                        className="mb-2"  # Réduire la marge inférieure des cartes
+                    ),
+                    width=3
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        [
+                            html.A(
+                                dbc.CardImg(src="https://static.wikia.nocookie.net/worldofcarsdrivein/images/d/dd/Doc_Hudson.png", top=True, style={"height": "150px", "object-fit": "contain"}),
+                                href="https://fr.linkedin.com/in/daguint",
+                                target="_blank"
+                            ),
+                            dbc.CardBody(
+                                [
+                                    html.H5("Thibault DAGUIN", className="card-title", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                    html.P("Le vieux sage des statistiques !", className="card-text", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                ]
+                            )
+                        ],
+                        className="mb-2"  # Réduire la marge inférieure des cartes
+                    ),
+                    width=3
+                ),
+                dbc.Col(
+                    dbc.Card(
+                        [
+                            html.A(
+                                dbc.CardImg(src="https://static.wikia.nocookie.net/worldofcarsdrivein/images/7/79/Cars3sally.png", top=True, style={"height": "150px", "object-fit": "contain"}),
+                                href="https://www.linkedin.com/in/manon-bonnaud-dubois-280266252/",
+                                target="_blank"
+                            ),
+                            
+                            dbc.CardBody(
+                                [
+                                    html.H5("Manon BONNAUD-DUBOIS", className="card-title", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                    html.P("L'habile débloqueuse de situations !", className="card-text", style={"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis"}),
+                                ]
+                            )
+                        ],
+                        className="mb-2"  # Réduire la marge inférieure des cartes
+                    ),
+                    width=3
+                ),
+            ],
+            justify="center"
+        ),
+
+        # Exemple d'application
+        html.H4("Le projet «Dash McQueen» : Un outil d'annotation d'images automobiles simple et performant", className="mt-2"),  # Réduire la marge supérieure du titre suivant
+        html.P(
+            """
+            Notre application se concentre sur l'annotation d'images de voitures. L'objectif est d'identifier 
+            précisément où se situe la voiture sur chaque image, afin de créer un ensemble de données annotées 
+            qui pourra être utilisé pour entraîner des modèles de détection d'objets. Ces annotations permettront 
+            d'améliorer la précision des modèles dans la reconnaissance de voitures sur d'autres images.
+            """,
+            className="mb-4"
+        ),
+
+        # Footer ou informations supplémentaires
+        html.Hr(),
+        dbc.Row(
+            [
+                dbc.Col(
+                    html.A(
+                        html.Img(src="https://www.univ-poitiers.fr/wp-content/uploads/sites/10/2021/10/logo-up.svg", style={"margin": "10px"}, height="80px"),
+                        href="https://www.univ-poitiers.fr"
+                    ),
+                    width="auto"
+                ),
+                dbc.Col(
+                    html.A(
+                        html.Img(src="https://iutp.univ-poitiers.fr/sd/wp-content/uploads/sites/137/2023/09/xLogo-SD-Niort-300x300.png.pagespeed.ic.pfiWeXH-r5.webp", style={"margin": "10px", "height": "80px"}),
+                        href="https://iutp.univ-poitiers.fr/sd/"
+                    ),
+                    width="auto"
+                ),
+                dbc.Col(
+                    html.A(
+                        html.Img(src="https://www.dash-extensions.com/assets/dash_logo.png", style={"margin": "10px", "height": "80px"}),
+                        href="https://www.dash-extensions.com/"
+                    ),
+                    width="auto"
+                ),
+            ],
+            justify="center",
+            className="mb-2"  # Utilisez une classe Bootstrap pour réduire la marge inférieure
+        ),
+    ]
+)
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\login.py`:
+
+```py
+import dash
+from dash import dcc, html, Input, Output, callback, State
+import dash_bootstrap_components as dbc
+import json
+import os
+
+dash.register_page(__name__, path='/') # '/' sert à faire la page d'accueil
+
+# Liste des annotateurs déjà connus
+data_users = './data/users.json'
+
+def load_users():
+    if os.path.exists(data_users):
+        with open(data_users, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    return []
+
+# Fonction pour sauvegarder les utilisateurs
+def save_users(users):
+    with open(data_users, 'w', encoding='utf-8') as file:
+        json.dump(users, file, indent=4)
+
+users = load_users()
+
+def generate_user_id():
+    if users:
+        return max(user['id'] for user in users) + 1
+    return 1
+
+layout = dbc.Container(
+        [
+            
+
+            dbc.Row(
+                dbc.Col(
+                    html.H1("Bienvenue sur l'interface d'annotation du groupe Dash McQueen", className="text-center mt-5")
+                )
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        dbc.Card(
+                            [
+                                dbc.CardHeader("Identifiez-vous"),
+                                dbc.CardBody(
+                                    [
+                                        html.H5("Sélectionnez un utilisateur ou ajoutez-en un nouveau", className="card-title"),
+                                        dcc.Dropdown(id='user_dropdown', 
+                                                     options=[{'label': user['name'], 'value': user['id']} for user in users],
+                                                     placeholder="Sélectionnez votre nom",
+                                                     className="mb-3"),
+                                        dbc.Input(id='new_user', type='text', 
+                                                  placeholder='Ou entrez un nouveau nom..',
+                                                  className="mb-3"),
+                                        dbc.Button('Se connecter', id='start_button', color='primary', 
+                                                   n_clicks=0, className='d-grid gap-2 col-6 mx-auto'), # Centrage du bouton grâce à la grille CSS
+                                        html.Div(id='user_message', className='mt-3'),
+                                        html.Div(className="mt-3") # Ajout d'un peu d'espace en bas de la card
+                                    ]
+                                )
+                            ],
+                            className="shadow-lg p-3 mb-2 bg-white rounded" # Ombrage + Marge Basse + Bord rond blanc
+                        ),
+                        width=6, # Centrer au milieu de la page
+                        className="offset-md-3"  # Centre la colonne dans la page
+                    )
+                ],
+                className="mt-5"
+            ),
+            dbc.Row(
+                dbc.Col(
+                    html.Footer([
+                        dcc.Markdown("""
+                            **© 2024 Projet d'annotation - Dash**
+                                     
+                            Contributeurs du projet : Thibault DAGUIN, Vadim MARTIN, Maël CHAINE, Manon BONNAUD-DUBOIS
+                            """)
+                    ],
+                        className="text-center mt-5"
+                    )
+                )
+            ),
+            dcc.Store(id='user_name_store', storage_type='local'),  # Pour stocker le nom d'utilisateur en cours sur la session
+        ],
+        fluid=False
+    )
+
+@callback(
+    Output('user_dropdown', 'options'),
+    Input('user_dropdown', 'value'),
+)
+
+def update_user_dropdown(selected_user):
+    # Mettre à jour la liste des utilisateurs
+    users = load_users()
+    return [{'label': user['name'], 'value': user['id']} for user in users]
+
+@callback(
+    Output('user_message', 'children'), # Message de connexion
+    Output('user_name_store', 'data'), # Stocker le nom d'utilisateur
+    Output('url', 'href'), # Redirection vers la page d'accueil
+    Input('start_button', 'n_clicks'), # Clic sur le bouton de connexion
+    State('new_user', 'value'), # Valeur du nouvel utilisateur
+    State('user_dropdown', 'value') # Valeur de l'utilisateur sélectionné
+)
+
+def gestion_connexion(n_clicks, new_user, selected_user):
+    # Gère la connexion d'un utilisateur ou d'un nouvel utilisateur
+    if n_clicks > 0:
+        if new_user:
+            return add_new_user(new_user)
+        
+        if selected_user:
+            return select_existing_user(selected_user)
+    
+    return not_connected(), None, dash.no_update
+
+def add_new_user(new_user):
+    # Ajoute un nouvel utilisateur
+    users = load_users()
+
+    # Vérifier si l'utilisateur existe déjà
+    if any(user['name'] == new_user for user in users):
+        return "L'utilisateur existe déjà.", None, dash.no_update
+    
+    # Ajouter le nouvel utilisateur
+    new_user_id = generate_user_id()
+    new_user_data = {
+        'id': new_user_id,
+        'name': new_user
+        }
+    users.append(new_user_data)
+    save_users(users)
+
+    return f"Nouvel utilisateur {new_user_data['name']} ajouté.", new_user_data['name'], '/accueil'
+
+def select_existing_user(selected_user):
+    # Retourne les infos d'un utilisateur existant
+    users = load_users()
+    user_name = next((user['name'] for user in users if user['id'] == selected_user), None)
+    return f"Vous êtes loggé en tant que {user_name}.", user_name, '/accueil'
+
+def not_connected():
+    # Retourne un message si l'utilisateur n'est pas connecté
+    return html.Div([
+        html.I(className="fas fa-exclamation-circle text-danger me-2"),  # Icône d'exclamation rouge
+        "Vous n'êtes pas loggé."
+    ], className='d-flex align-items-center')
+
+def afficher_message_loggé():
+    # Affiche un message si l'utilisateur est connecté
+    return html.Div(id='user_status', className='text-right mt-2')
+
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\stats.py`:
+
+```py
+# -*- coding: utf-8 -*-
+
+from dash import dcc, html, Input, Output
+import dash
+import pandas as pd
+import json
+import plotly.express as px
+
+# Enregistrer la page dans le registre avec le decorateur
+dash.register_page(__name__, path='/stats', name='Stats', order=4)
+
+# Charger les donnees CSV
+try:
+    df = pd.read_csv('data/data_fictive.csv', sep=';', encoding='utf-8')
+except Exception as e:
+    print(f"Erreur lors du chargement du CSV : {e}")
+    df = pd.read_csv('data/data_fictive.csv', sep=';', encoding='ISO-8859-1')
+
+# Charger les utilisateurs a partir du fichier JSON
+try:
+    with open('data/users.json', 'r', encoding='utf-8') as f:
+        users = json.load(f)
+except Exception as e:
+    print(f"Erreur lors du chargement du fichier JSON : {e}")
+    users = []
+
+# Convertir les utilisateurs en DataFrame si necessaire
+users_df = pd.DataFrame(users)
+
+# Fonctions utilitaires
+def count_non_empty(series):
+    return series.notna().sum()
+
+def create_distribution_chart(data, title):
+    # Reinitialiser l'index pour obtenir un DataFrame avec des colonnes
+    data_df = data.reset_index()
+    data_df.columns = ['index', 'count']  # Renommer les colonnes pour le graphique
+    fig = px.pie(data_frame=data_df, names='index', values='count', title=title)
+    return dcc.Graph(figure=fig)
+
+# Composants pour les statistiques globales
+def global_stats():
+    return html.Div([
+        html.H4("Statistiques Globales"),
+        html.Div([
+            html.P(f"Nombre d'annotations: {len(df)}"),
+            html.P(f"Nombre de validations: {count_non_empty(df['Reviewer'])}"),
+        ], className="stats-summary"),
+        create_distribution_chart(df['User'].value_counts(), "Repartition des utilisateurs"),
+        create_distribution_chart(df['Reviewer'].value_counts(), "Repartition des validateurs"),
+        create_distribution_chart(df['Couleur'].value_counts(), "Repartition des couleurs"),
+        create_distribution_chart(df['Marque'].value_counts(), "Repartition des marques"),
+    ])
+
+# Composants pour les statistiques personnelles
+def personal_stats():
+    return html.Div([
+        html.H4("Statistiques Personnelles"),
+        dcc.Dropdown(
+            id='user-dropdown',
+            options=[{'label': user['name'], 'value': user['name']} for user in users],
+            value=users[0]['name'] if users else None,
+            className="dropdown"
+        ),
+        html.Div(id='personal-stats-content')
+    ])
+
+# Callback pour mettre a jour les statistiques personnelles
+@dash.callback(
+    Output('personal-stats-content', 'children'),
+    Input('user-dropdown', 'value')
+)
+def update_personal_stats(selected_user):
+    if selected_user is None:
+        return html.Div("Veuillez selectionner un utilisateur.")
+
+    user_df = df[df['User'] == selected_user]
+    return html.Div([
+        html.Div([
+            html.P(f"Nombre d'annotations: {len(user_df)}"),
+            html.P(f"Nombre de validations: {count_non_empty(user_df['Reviewer'])}"),
+        ], className="stats-summary"),
+        create_distribution_chart(user_df['Couleur'].value_counts(), f"Repartition des couleurs pour {selected_user}"),
+        create_distribution_chart(user_df['Marque'].value_counts(), f"Repartition des marques pour {selected_user}"),
+    ])
+
+# Layout principal
+layout = html.Div([
+    html.H3("Statistiques"),
+    dcc.Tabs([
+        dcc.Tab(label="Stats Globales", children=[global_stats()]),
+        dcc.Tab(label="Stats Personnelles", children=[personal_stats()])
+    ], className="custom-tabs")
+])
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\pages\verify.py`:
+
+```py
+import dash
+from dash import dcc, html, Input, Output, State
+import dash_bootstrap_components as dbc
+import plotly.express as px
+from skimage import io
+import os
+import json
+from urllib.parse import urlparse, parse_qs
+from datetime import datetime
+
+dash.register_page(__name__, path_template="/verify")
+
+# File paths
+dossier_img = './data/cars/'
+annotations_file = './data/annotations.json'
+
+# Function to load annotation by ID
+def get_annotation_by_id(annotation_id):
+    if os.path.exists(annotations_file):
+        with open(annotations_file, 'r') as f:
+            annotations = json.load(f)
+            for annotation in annotations:
+                if str(annotation['id']) == str(annotation_id):  # Ensure ID is compared as string
+                    return annotation
+    return None
+
+# Function to load image by name
+def load_image(image_name):
+    img_path = os.path.join(dossier_img, image_name)
+    if os.path.exists(img_path):
+        return io.imread(img_path)
+    else:
+        print(f"Image {image_name} not found at path {img_path}")
+        return None
+
+# Layout for the verify page
+layout = html.Div([
+    html.H3("Vérifier l'Annotation"),
+    dcc.Graph(id='annotation-graph'),
+    dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),
+    html.Div(id="action-message"),
+    dcc.Location(id="redirect", refresh=True)
+])
+
+# Callback to display image with annotations
+@dash.callback(
+    Output('annotation-graph', 'figure'),
+    Input('url', 'href')
+)
+def display_image_with_annotations(href):
+    if href:
+        # Parse the URL to extract the annotation ID
+        parsed_url = urlparse(href)
+        params = parse_qs(parsed_url.query)
+        annotation_id = params.get('id', [None])[0]
+
+        if annotation_id:
+            # Get annotation data by ID
+            annotation = get_annotation_by_id(annotation_id)
+            if annotation:
+                # Load the corresponding image
+                image = load_image(annotation['image_name'])
+                if image is not None:
+                    fig = px.imshow(image)
+
+                    # Iterate through each annotation shape and add it to the figure
+                    for ann in annotation['annotations']:
+                        fig.add_shape(
+                            type=ann['type'],
+                            x0=ann['x0'],
+                            y0=ann['y0'],
+                            x1=ann['x1'],
+                            y1=ann['y1'],
+                            line=dict(
+                                color=ann['line']['color'],
+                                width=ann['line']['width'],
+                                dash=ann['line']['dash']
+                            ),
+                            fillcolor=ann['fillcolor'],
+                            opacity=ann['opacity']
+                        )
+
+                    return fig
+    return {}
+
+# Callback to handle "Valider" button click and update the reviewer and review_date
+@dash.callback(
+    [Output('action-message', 'children'), Output('redirect', 'href')],  # Update to return redirection
+    Input('valider-button', 'n_clicks'),
+    State('url', 'href'),
+    State('user_name_store', 'data'),
+    prevent_initial_call=True
+)
+def handle_valider(n_clicks, href, user_name):
+    if n_clicks > 0 and user_name:
+        # Parse the URL to extract the annotation ID
+        parsed_url = urlparse(href)
+        params = parse_qs(parsed_url.query)
+        annotation_id = params.get('id', [None])[0]
+
+        if annotation_id:
+            # Load the annotation and update the reviewer and review_date
+            if os.path.exists(annotations_file):
+                with open(annotations_file, 'r') as f:
+                    annotations = json.load(f)
+                
+                for annotation in annotations:
+                    if str(annotation['id']) == str(annotation_id):  # Ensure ID comparison is correct
+                        # Update the reviewer field
+                        annotation['reviewer'] = user_name
+                        # Add the review date in YYYY-MM-DD format
+                        annotation['review_date'] = datetime.now().strftime('%Y-%m-%d')
+                        break
+
+                # Save the updated annotations
+                with open(annotations_file, 'w') as f:
+                    json.dump(annotations, f, indent=2)
+
+                # Redirect to annotation page
+                return f"L'annotation a bien été validée par {user_name}.", '/annotation'
+
+    return "Une erreur s'est produite lors de la validation.", dash.no_update
+```
+
+`\\?\J:\BUT SD\S5\Dash\Projet_Dash\requirements.txt`:
+
+```txt
+dash==2.11.0
+dash-bootstrap-components
+plotly
+scikit-image==0.20.0
+Pillow==9.5.0
+scikit-image
+plotly_express
+numpy
+```
