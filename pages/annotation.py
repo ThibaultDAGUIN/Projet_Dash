@@ -41,8 +41,8 @@ columns = [
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Review Date', 'id': 'Review Date'},
-    {'name': 'Verifier', 'id': 'Verifier'}  # Removed 'presentation' for markdown
-]
+    {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown for Verifier
+    ]
 
 # Layout for the annotation page
 layout = html.Div([
@@ -53,7 +53,7 @@ layout = html.Div([
         id='annotation-table',
         columns=columns,
         data=[
-            {**row, 'Verifier': f'/verify?id={row["id"]}'}
+            {**row, 'Verifier': f'<a href="/verify?id={row["id"]}">Vérifier</a>'}
             for row in prepare_table_data()
         ],
         style_table={'width': '80%', 'margin': 'auto'},
@@ -74,7 +74,7 @@ layout = html.Div([
 def update_table(_):
     """Callback to update the DataTable with the latest annotation data."""
     return [
-        {**row, 'Verifier': f'/verify?id={row["id"]}'}
+            {**row, 'Verifier': 'Cliquez la cellule pour vérifier'}
         for row in prepare_table_data()
     ]
 

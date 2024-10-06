@@ -128,8 +128,8 @@ if __name__ == '__main__':
     "image_name": "car428.jpg",
     "annotateur": "Vadim",
     "date": "2024-10-06",
-    "reviewer": "",
-    "review_date": "",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
     "annotations": [
       {
         "editable": true,
@@ -287,6 +287,105 @@ if __name__ == '__main__':
         "y1": 234.09483347246723
       }
     ]
+  },
+  {
+    "id": 6,
+    "image_name": "mazdacx3.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 164.07198250063,
+        "y0": 274.3154657179309,
+        "x1": 1115.813917984501,
+        "y1": 854.2832076534147
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "image_name": "flashmcqueen.jpeg",
+    "annotateur": "Ma\u00ebl",
+    "date": "2024-10-06",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 22.849647177419357,
+        "y0": 100.57869833669355,
+        "x1": 985.3270665322582,
+        "y1": 531.649666078629
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "image_name": "car432.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date": "2024-10-06",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 17.848387096774204,
+        "y0": 66.31870501118321,
+        "x1": 444.4483870967742,
+        "y1": 224.57354372086064
+      }
+    ]
   }
 ]
 ```
@@ -388,7 +487,7 @@ columns = [
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Review Date', 'id': 'Review Date'},
-    {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}
+    {'name': 'Verifier', 'id': 'Verifier'}  # Removed 'presentation' for markdown
 ]
 
 # Layout for the annotation page
@@ -400,14 +499,17 @@ layout = html.Div([
         id='annotation-table',
         columns=columns,
         data=[
-            {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}
+            {**row, 'Verifier': f'/verify?id={row["id"]}'}
             for row in prepare_table_data()
         ],
         style_table={'width': '80%', 'margin': 'auto'},
         style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'},
         style_cell={'textAlign': 'left'},
         page_size=10,
-    )
+    ),
+    
+    # Hidden Div for state or navigation
+    html.Div(id='hidden-div', style={'display': 'none'}),
 ])
 
 # Callback to update the table dynamically
@@ -418,9 +520,26 @@ layout = html.Div([
 def update_table(_):
     """Callback to update the DataTable with the latest annotation data."""
     return [
-        {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}
+        {**row, 'Verifier': f'/verify?id={row["id"]}'}
         for row in prepare_table_data()
     ]
+
+# Callback to handle clicks on the Verifier links
+@dash.callback(
+    Output('hidden-div', 'children'),  # Using a hidden div to capture link clicks
+    Input('annotation-table', 'active_cell')
+)
+def handle_verifier_click(active_cell):
+    """Callback to handle clicks on the Verifier link."""
+    if active_cell and active_cell['column_id'] == 'Verifier':
+        row_index = active_cell['row']  # Get the row index of the clicked cell
+        
+        # Retrieve the full DataTable data
+        data = prepare_table_data()  # You can also store this in a global variable if you want
+        id_value = data[row_index]['id']  # Get the id from the corresponding row
+
+        return dcc.Location(href=f'/verify?id={id_value}', id='redirect')
+    return dash.no_update
 
 ```
 

@@ -38,7 +38,8 @@ layout = html.Div([
     html.H3("Vérifier l'Annotation"),
     dcc.Graph(id='annotation-graph'),
     dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),
-    html.Div(id="action-message") 
+    html.Div(id="action-message"),
+    dcc.Location(id="redirect", refresh=True)
 ])
 
 # Callback to display image with annotations
@@ -84,7 +85,7 @@ def display_image_with_annotations(href):
 
 # Callback to handle "Valider" button click and update the reviewer and review_date
 @dash.callback(
-    Output('action-message', 'children'),
+    [Output('action-message', 'children'), Output('redirect', 'href')],  # Update to return redirection
     Input('valider-button', 'n_clicks'),
     State('url', 'href'),
     State('user_name_store', 'data'),
@@ -115,6 +116,7 @@ def handle_valider(n_clicks, href, user_name):
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
-                return f"L'annotation a bien été validée par {user_name}."
+                # Redirect to annotation page
+                return f"L'annotation a bien été validée par {user_name}.", '/annotation'
 
-    return "Une erreur s'est produite lors de la validation."
+    return "Une erreur s'est produite lors de la validation.", dash.no_update
