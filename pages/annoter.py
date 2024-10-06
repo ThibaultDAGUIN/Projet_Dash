@@ -18,9 +18,13 @@ def recup_img_aleatoire():
         return os.path.join(dossier_img, random_image)
     return None
 
+nom_image = None
+
 def charger_image():
     chemin_image = recup_img_aleatoire()
     if chemin_image:
+        global nom_image  # Utilisez la variable globale pour stocker le nom de l'image
+        nom_image = os.path.basename(chemin_image)  # Récupérer uniquement le nom du fichier
         return io.imread(chemin_image)
     return None
 
@@ -50,7 +54,61 @@ layout = html.Div(
     [
         html.H3("Interface d'annotation", className='text-center my-3'),
         dcc.Graph(id="graph-styled-annotations", figure=fig),
-
+        dbc.Row(
+            [
+                dbc.Col(
+                    dcc.Dropdown(
+                        placeholder="Marque du véhicule",
+                        id="marque_vehicule",
+                        style={'width': '400px', 'text-align': 'center'},
+                        options=[
+                            {'label': 'Audi', 'value': 'Audi'},
+                            {'label': 'BMW', 'value': 'BMW'},
+                            {'label': 'Citroën', 'value': 'Citroen'},
+                            {'label': 'Dacia', 'value': 'Dacia'},
+                            {'label': 'Fiat', 'value': 'Fiat'},
+                            {'label': 'Ford', 'value': 'Ford'},
+                            {'label': 'Mercedes', 'value': 'Mercedes'},
+                            {'label': 'Peugeot', 'value': 'Peugeot'},
+                            {'label': 'Renault', 'value': 'Renault'},
+                            {'label': 'Toyota', 'value': 'Toyota'},
+                            {'label': 'Volkswagen', 'value': 'Volkswagen'},
+                            {'label': 'Mazda', 'value': 'Mazda'},
+                            {'label': 'Tesla', 'value': 'Tesla'},
+                            {'label': 'Porsche', 'value': 'Porsche'},
+                            {'label': 'Autre', 'value': 'Autre'},
+                        ],
+                    ),
+                    width='auto'
+                ),
+                
+                dbc.Col(
+                    dcc.Dropdown(
+                        placeholder="Couleur du véhicule",
+                        id="couleur_vehicule",
+                        style={'width': '400px', 'text-align': 'center'},
+                        options=[
+                            {'label': 'Blanc', 'value': 'Blanc'},
+                            {'label': 'Noir', 'value': 'Noir'},
+                            {'label': 'Bleu', 'value': 'Bleu'},
+                            {'label': 'Rouge', 'value': 'Rouge'},
+                            {'label': 'Vert', 'value': 'Vert'},
+                            {'label': 'Jaune', 'value': 'Jaune'},
+                            {'label': 'Gris', 'value': 'Gris'},
+                            {'label': 'Marron', 'value': 'Marron'},
+                            {'label': 'Orange', 'value': 'Orange'},
+                            {'label': 'Violet', 'value': 'Violet'},
+                            {'label': 'Rose', 'value': 'Rose'},
+                            {'label': 'Autre', 'value': 'Autre'},
+                        ],
+                    ),
+                    width='auto'
+                ),
+            ],
+            justify='center',
+            className='d-flex my-3',
+            style={'alignItems': 'center'}
+        ),
         dcc.Upload(
             id="import-image",
             children=html.Div(
@@ -94,7 +152,7 @@ layout = html.Div(
                 
                 dbc.Col(
                     dbc.Button(
-                        "Modifier l'annotation",
+                        "Annuler l'annotation",
                         id="bouton_reset",
                         color='danger',
                         n_clicks=0,
@@ -107,6 +165,8 @@ layout = html.Div(
         ),
         html.Pre(id="annotation_data", className='my-3'),
         dcc.Store(id='user_name_store', storage_type='local'), # Pour stocker le nom d'utilisateur en cours sur la session
+        dcc.Store(id='current_image_store', storage_type='local'), # Pour stocker l'image actuelle
+
     ]
 )
 
@@ -154,10 +214,12 @@ def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename,
     Input("bouton_valider", "n_clicks"),
     State('graph-styled-annotations', 'relayoutData'),
     State('user_name_store', 'data'),
+    State('marque_vehicule', 'value'),
+    State('couleur_vehicule', 'value'),
     prevent_initial_call='initial_duplicate'
 )
 
-def afficher_annotation(n_clicks, relayoutData, user_name):
+def afficher_annotation(n_clicks, relayoutData, user_name, marque, couleur):
     if n_clicks is None and user_name :
         return dash.no_update, dash.no_update, True
         # Vérifier si des annotations existent
@@ -173,9 +235,13 @@ def afficher_annotation(n_clicks, relayoutData, user_name):
             # Modifier le fichier json annotation avec le nom de l'annotateur
             new_annotation = {
                 'id': len(annotations_data) + 1,
+                'nom_image': nom_image,
                 'annotateur': user_name,
-                'date': datetime.now().strftime('%Y-%m-%d'),
+                'date_annotation': datetime.now().strftime('%Y-%m-%d'),
                 'reviewer': '',
+                'date_review': '',
+                'marque': marque,
+                'couleur': couleur,
                 'annotations': relayoutData['shapes']
             }
 
@@ -187,7 +253,7 @@ def afficher_annotation(n_clicks, relayoutData, user_name):
                 json.dump(annotations_data, f, indent=2)
 
             # Message de confirmation
-            message = f"L'annotation réalisée par {user_name} a bien été enregistrée."
+            message = f"L'annotation réalisée par {user_name} sur l'image {nom_image} a bien été enregistrée."
             
             # Passer à l'image suivante
             img = charger_image()
@@ -217,3 +283,27 @@ def activer_bouton(relayoutData):
     if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
         return False
     return True
+
+@callback(
+    Output('graph-styled-annotations', 'figure', allow_duplicate=True),
+    Input('bouton_reset', 'n_clicks'),
+    State('graph-styled-annotations', 'relayoutData'),
+    prevent_initial_call=True
+)
+
+def reset_annotation(n_clicks, relayoutData):
+    if n_clicks > 0:
+        # Si des annotations existent, les supprimer
+        if relayoutData is not None and 'shapes' in relayoutData:
+            relayoutData['shapes'] = [] 
+
+        # Recréer la figure sans annotations
+        img = io.imread(os.path.join(dossier_img, nom_image))  # Recharger l'image actuelle
+        fig = px.imshow(img)
+        fig.update_layout(
+            dragmode="drawrect",
+            newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+            shapes=relayoutData.get('shapes', []),
+        )
+        return fig
+    return dash.no_update

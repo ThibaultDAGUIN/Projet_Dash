@@ -13,13 +13,14 @@ app.layout = html.Div([
     dbc.NavbarSimple(
         children=[
             dbc.NavLink('Accueil', href='/accueil'),
+            dbc.NavLink('À propos', href='/apropos'),
             dbc.NavLink('Interface d\'annotation', href='/annoter'),
             dbc.NavLink('Liste des annotations', href='/annotation'),
             dbc.NavLink('Statistiques', href='/stats'),
             html.Span(id='user_status', className='text-light align-self-center', style={'font-size': '0.9rem', 'marginLeft': '100px', 'marginRight':'20px'}),
             dbc.Button('Déconnexion', color='danger', outline=True, className='text-light align-self-center', style={'font-size': '0.8rem'}, id='logout_button', n_clicks=0),
         ],
-        brand="Projet d'Annotation M2VT",
+        brand="Groupe MC BDD",
         color="#333333",
         dark=True,
         id='navbar',
@@ -33,6 +34,7 @@ app.layout = html.Div([
     Input('user_name_store', 'data'),
     prevent_initial_call='True'
 )
+
 def afficher_message_loggé(user_name):
     if user_name:
         return f"Vous êtes loggé en tant que {user_name}."
