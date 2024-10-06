@@ -8,37 +8,37 @@ import json
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 
-dash.register_page(__name__, path_template="/verify")
+dash.register_page(__name__, path_template="/verifier")
 
-# File paths
+# Chemins des fichiers
 dossier_img = './data/cars/'
 annotations_file = './data/annotations.json'
 
-# Function to load annotation by ID
+# Fonction pour charger une annotation par ID
 def get_annotation_by_id(annotation_id):
     if os.path.exists(annotations_file):
         with open(annotations_file, 'r') as f:
             annotations = json.load(f)
             for annotation in annotations:
-                if str(annotation['id']) == str(annotation_id):  # Ensure ID is compared as string
+                if str(annotation['id']) == str(annotation_id):  # S'assurer que l'ID est comparé en tant que chaîne
                     return annotation
     return None
 
-# Function to load image by name
+# Fonction pour charger une image par nom
 def load_image(image_name):
     img_path = os.path.join(dossier_img, image_name)
     if os.path.exists(img_path):
         return io.imread(img_path)
     else:
-        print(f"Image {image_name} not found at path {img_path}")
+        print(f"Image {image_name} non trouvée au chemin {img_path}")
         return None
 
-# Layout for the verify page
+# Mise en page pour la page de vérification
 layout = html.Div([
     html.H3("Vérifier l'Annotation", className='text-center my-3'),
     dcc.Graph(id='annotation-graph'),
     
-    # Center the buttons using a Bootstrap Row
+    # Centrer les boutons en utilisant une ligne Bootstrap
     dbc.Row(
         [
             dbc.Col(
@@ -50,36 +50,36 @@ layout = html.Div([
                 width="auto"
             )
         ],
-        justify="center",  # Center the buttons
-        className="my-3"  # Add some vertical margin
+        justify="center",  # Centrer les boutons
+        className="my-3"  # Ajouter une marge verticale
     ),
     
     html.Div(id="action-message"),
     dcc.Location(id="redirect", refresh=True)
 ])
 
-# Callback to display image with annotations
+# Callback pour afficher l'image avec les annotations
 @dash.callback(
     Output('annotation-graph', 'figure'),
     Input('url', 'href')
 )
 def display_image_with_annotations(href):
     if href:
-        # Parse the URL to extract the annotation ID
+        # Analyser l'URL pour extraire l'ID de l'annotation
         parsed_url = urlparse(href)
         params = parse_qs(parsed_url.query)
         annotation_id = params.get('id', [None])[0]
 
         if annotation_id:
-            # Get annotation data by ID
+            # Obtenir les données d'annotation par ID
             annotation = get_annotation_by_id(annotation_id)
             if annotation:
-                # Load the corresponding image
-                image = load_image(annotation['nom_image'])  # Change 'image_name' to 'nom_image'
+                # Charger l'image correspondante
+                image = load_image(annotation['nom_image'])  # Changer 'image_name' en 'nom_image'
                 if image is not None:
                     fig = px.imshow(image)
 
-                    # Iterate through each annotation shape and add it to the figure
+                    # Parcourir chaque forme d'annotation et l'ajouter à la figure
                     for ann in annotation['annotations']:
                         fig.add_shape(
                             type=ann['type'],
@@ -99,7 +99,7 @@ def display_image_with_annotations(href):
                     return fig
     return {}
 
-# Combined callback to handle both "Valider" and "Supprimer" button clicks
+# Callback combiné pour gérer les clics sur les boutons "Valider" et "Supprimer"
 @dash.callback(
     [Output('action-message', 'children'), Output('redirect', 'href')],
     [Input('valider-button', 'n_clicks'), Input('supprimer-button', 'n_clicks')],
@@ -108,56 +108,56 @@ def display_image_with_annotations(href):
     prevent_initial_call=True
 )
 def handle_buttons(valider_clicks, supprimer_clicks, href, user_name):
-    # Determine which button was clicked
+    # Déterminer quel bouton a été cliqué
     ctx = dash.callback_context
 
     if not ctx.triggered:
         return dash.no_update, dash.no_update
 
-    # Parse the URL to extract the annotation ID
+    # Analyser l'URL pour extraire l'ID de l'annotation
     parsed_url = urlparse(href)
     params = parse_qs(parsed_url.query)
     annotation_id = params.get('id', [None])[0]
 
-    # Handle "Valider" button click
+    # Gérer le clic sur le bouton "Valider"
     if ctx.triggered[0]['prop_id'] == 'valider-button.n_clicks' and user_name:
         if annotation_id:
-            # Load the annotation and update the reviewer and review_date
+            # Charger l'annotation et mettre à jour le reviewer et la date de révision
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations = json.load(f)
 
                 for annotation in annotations:
-                    if str(annotation['id']) == str(annotation_id):  # Ensure ID comparison is correct
-                        # Update the reviewer field
+                    if str(annotation['id']) == str(annotation_id):  # S'assurer que la comparaison de l'ID est correcte
+                        # Mettre à jour le champ reviewer
                         annotation['reviewer'] = user_name
-                        # Add the review date in YYYY-MM-DD format
-                        annotation['date_review'] = datetime.now().strftime('%Y-%m-%d')  # Change to 'date_review'
+                        # Ajouter la date de révision au format AAAA-MM-JJ
+                        annotation['date_review'] = datetime.now().strftime('%Y-%m-%d')  # Changer en 'date_review'
                         break
 
-                # Save the updated annotations
+                # Enregistrer les annotations mises à jour
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
-                # Redirect to annotation page
+                # Rediriger vers la page des annotations
                 return f"L'annotation a bien été validée par {user_name}.", '/annotation'
 
-    # Handle "Supprimer" button click
+    # Gérer le clic sur le bouton "Supprimer"
     if ctx.triggered[0]['prop_id'] == 'supprimer-button.n_clicks':
         if annotation_id:
-            # Load the annotations and delete the specified one
+            # Charger les annotations et supprimer celle spécifiée
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations = json.load(f)
 
-                # Filter out the annotation with the matching ID
+                # Filtrer l'annotation avec l'ID correspondant
                 annotations = [ann for ann in annotations if str(ann['id']) != str(annotation_id)]
 
-                # Save the updated annotations
+                # Enregistrer les annotations mises à jour
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
-                # Redirect to annotation page
+                # Rediriger vers la page des annotations
                 return f"L'annotation {annotation_id} a été supprimée.", '/annotation'
 
     return "Une erreur s'est produite lors de la validation.", dash.no_update

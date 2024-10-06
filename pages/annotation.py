@@ -9,14 +9,14 @@ dash.register_page(__name__)
 annotations_file = './data/annotations.json'
 
 def load_annotations():
-    """Load annotations from the JSON file."""
+    """Charger les annotations à partir du fichier JSON."""
     if os.path.exists(annotations_file):
         with open(annotations_file, 'r') as f:
             return json.load(f)
     return []
 
 def prepare_table_data():
-    """Prepare data for the DataTable from annotations."""
+    """Préparer les données pour le DataTable à partir des annotations."""
     annotations = load_annotations()
     table_data = []
     
@@ -30,7 +30,7 @@ def prepare_table_data():
             'id': annotation.get('id')
         })
     
-    # Sorting the data
+    # Tri des données
     table_data.sort(key=lambda x: (x['Reviewer'] == 'N/A', x['Reviewer'], datetime.strptime(x['Date'], '%Y-%m-%d') if x['Date'] != 'N/A' else datetime.min))
     
     return table_data
@@ -41,10 +41,10 @@ columns = [
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Review Date', 'id': 'Review Date'},
-    {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown for Verifier
+    {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown pour Verifier
 ]
 
-# Layout for the annotation page
+# Mise en page pour la page d'annotations
 layout = html.Div([
     html.H1("Liste des Annotations", className='text-center my-3'),
     html.Div("Voici la liste des annotations effectuées :", className='text-center my-3'),
@@ -53,7 +53,7 @@ layout = html.Div([
         id='annotation-table',
         columns=columns,
         data=[
-            {**row, 'Verifier': f'<a href="/verify?id={row["id"]}">Vérifier</a>'}
+            {**row, 'Verifier': f'<a href="/verifier?id={row["id"]}">Vérifier</a>'}
             for row in prepare_table_data()
         ],
         style_table={'width': '80%', 'margin': 'auto'},
@@ -62,35 +62,35 @@ layout = html.Div([
         page_size=10,
     ),
     
-    # Hidden Div for state or navigation
+    # Div cachée pour l'état ou la navigation
     html.Div(id='hidden-div', style={'display': 'none'}),
 ])
 
-# Callback to update the table dynamically
+# Callback pour mettre à jour le tableau dynamiquement
 @dash.callback(
     Output('annotation-table', 'data'),
-    Input('annotation-table', 'data')  # Dummy input to trigger update on any change
+    Input('annotation-table', 'data')  # Entrée factice pour déclencher la mise à jour à chaque changement
 )
 def update_table(_):
-    """Callback to update the DataTable with the latest annotation data."""
+    """Callback pour mettre à jour le DataTable avec les dernières données d'annotation."""
     return [
             {**row, 'Verifier': 'Cliquez la cellule pour vérifier'}
         for row in prepare_table_data()
     ]
 
-# Callback to handle clicks on the Verifier links
+# Callback pour gérer les clics sur les liens Verifier
 @dash.callback(
-    Output('hidden-div', 'children'),  # Using a hidden div to capture link clicks
+    Output('hidden-div', 'children'),  # Utilisation d'une div cachée pour capturer les clics sur le lien
     Input('annotation-table', 'active_cell')
 )
 def handle_verifier_click(active_cell):
-    """Callback to handle clicks on the Verifier link."""
+    """Callback pour gérer les clics sur le lien Verifier."""
     if active_cell and active_cell['column_id'] == 'Verifier':
-        row_index = active_cell['row']  # Get the row index of the clicked cell
+        row_index = active_cell['row']  # Obtenir l'index de la ligne de la cellule cliquée
         
-        # Retrieve the full DataTable data
-        data = prepare_table_data()  # You can also store this in a global variable if you want
-        id_value = data[row_index]['id']  # Get the id from the corresponding row
+        # Récupérer les données complètes du DataTable
+        data = prepare_table_data()  # Vous pouvez aussi stocker ceci dans une variable globale si nécessaire
+        id_value = data[row_index]['id']  # Obtenir l'id de la ligne correspondante
 
-        return dcc.Location(href=f'/verify?id={id_value}', id='redirect')
+        return dcc.Location(href=f'/verifier?id={id_value}', id='redirect')
     return dash.no_update
