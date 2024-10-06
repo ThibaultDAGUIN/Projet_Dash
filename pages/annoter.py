@@ -2,14 +2,19 @@ import dash
 from dash import dcc, html, Input, Output, callback, State
 from skimage import io
 import plotly_express as px
-import os, json, random, base64
+import os
+import json
+import random
+import base64
 import dash_bootstrap_components as dbc
 from datetime import datetime
 
+# Define paths for images and JSON files
 dossier_img = './data/cars/'
 users_file = './data/users.json'
 annotations_file = './data/annotations.json'
 
+# Function to retrieve a random image
 def recup_img_aleatoire():
     files = os.listdir(dossier_img)
     images = [file for file in files if file.endswith(('png', 'jpg', 'jpeg'))]
@@ -18,12 +23,15 @@ def recup_img_aleatoire():
         return os.path.join(dossier_img, random_image)
     return None
 
+# Function to load an image and return it with its filename
 def charger_image():
     chemin_image = recup_img_aleatoire()
     if chemin_image:
-        return io.imread(chemin_image)
-    return None
+        img = io.imread(chemin_image)
+        return img, os.path.basename(chemin_image)  # Return both image and filename
+    return None, None  # Return None for both if no image is found
 
+# Function to save uploaded image
 def save_img(content, filename):
     data = content.split(",")[1]
     img_data = base64.b64decode(data)
@@ -33,9 +41,11 @@ def save_img(content, filename):
         f.write(img_data)
     return filepath
 
+# Register the Dash app page
 dash.register_page(__name__)
 
-img = charger_image()
+# Load initial image and filename
+img, filename = charger_image()
 
 if img is not None:
     fig = px.imshow(img)
@@ -46,10 +56,14 @@ if img is not None:
 else:
     fig = None
 
+# Layout of the Dash app
 layout = html.Div(
     [
         html.H3("Interface d'annotation", className='text-center my-3'),
         dcc.Graph(id="graph-styled-annotations", figure=fig),
+
+        # Store the filename in hidden storage
+        dcc.Store(id='filename_store', data=filename),
 
         dcc.Upload(
             id="import-image",
@@ -106,13 +120,14 @@ layout = html.Div(
             className='my-3',
         ),
         html.Pre(id="annotation_data", className='my-3'),
-        dcc.Store(id='user_name_store', storage_type='local'), # Pour stocker le nom d'utilisateur en cours sur la session
+        dcc.Store(id='user_name_store', storage_type='local'), # Store the current user's name in the session
     ]
 )
 
+# Callback to handle the upload modal and image display
 @callback(
-    Output('modal', 'is_open'), # Ouvrir ou fermer le modal
-    Output('graph-styled-annotations', 'figure', allow_duplicate=True), # Mettre à jour l'image affichée
+    Output('modal', 'is_open'), # Open or close the modal
+    Output('graph-styled-annotations', 'figure', allow_duplicate=True), # Update the displayed image
     Input('import-image', 'contents'),
     Input('fermer_modal', 'n_clicks'),
     Input('confirmer_modal', 'n_clicks'),
@@ -121,32 +136,36 @@ layout = html.Div(
     State('graph-styled-annotations', 'figure'),
     prevent_initial_call=True
 )
-
 def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename, current_fig):
-    # Ouvrir le modal lorsque l'image est importée
+    # Open the modal when an image is uploaded
     if contenu_img is not None and is_open is False:
         return True, current_fig
     
-    # Si "Non" est cliqué, fermer le modal sans rien faire
+    # If "No" is clicked, close the modal without doing anything
     if cancel_clicks:
         return False, current_fig
     
-    # Si "Oui" est cliqué, sauvegarder l'image
+    # If "Yes" is clicked, save the image
     if confirm_clicks:
         save_img(contenu_img, filename)
         
-        # Charger l'image sauvegardée pour l'afficher
-        img = io.imread(os.path.join(dossier_img, filename))
-        fig = px.imshow(img)
-        fig.update_layout(
-            dragmode="drawrect",
-            newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
-        )
-        return False, fig
+        # Load the saved image to display
+        img, next_filename = charger_image()  # Get the next image and its filename
+        if img is not None:
+            fig = px.imshow(img)
+            fig.update_layout(
+                dragmode="drawrect",
+                newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+            )
+            # Update the filename in store
+            return False, fig
+
+        return False, None  # In case no next image is available
     
-    # Si aucune action n'a été prise, ne rien changer
+    # If no action has been taken, do not change anything
     return is_open, current_fig
 
+# Callback to handle annotation submission
 @callback(
     Output('annotation_data', 'children'),
     Output('graph-styled-annotations', 'figure'),
@@ -154,65 +173,66 @@ def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename,
     Input("bouton_valider", "n_clicks"),
     State('graph-styled-annotations', 'relayoutData'),
     State('user_name_store', 'data'),
-    prevent_initial_call='initial_duplicate'
+    State('filename_store', 'data'), 
+    prevent_initial_call=True
 )
-
-def afficher_annotation(n_clicks, relayoutData, user_name):
-    if n_clicks is None and user_name :
+def afficher_annotation(n_clicks, relayoutData, user_name, filename):
+    # print(f"Filename from store: {filename}") 
+    if n_clicks is None and user_name:
         return dash.no_update, dash.no_update, True
-        # Vérifier si des annotations existent
-    if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
-        try :
 
-            # Charger les annotations précédentes
+    if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
+        try:
+            # Load existing annotations
             annotations_data = []
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations_data = json.load(f)
 
-            # Modifier le fichier json annotation avec le nom de l'annotateur
+            # Create a new annotation entry
             new_annotation = {
                 'id': len(annotations_data) + 1,
+                'image_name': filename,  # Ensure this is set correctly
                 'annotateur': user_name,
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'reviewer': '',
+                "review_date": '',
                 'annotations': relayoutData['shapes']
             }
 
-            # Ajouter les nouvelles annotations
+            # Append new annotation and save
             annotations_data.append(new_annotation)
-
-            # Sauvegarder les annotations dans un fichier JSON
             with open(annotations_file, 'w') as f:
                 json.dump(annotations_data, f, indent=2)
 
-            # Message de confirmation
+            # Confirmation message
             message = f"L'annotation réalisée par {user_name} a bien été enregistrée."
-            
-            # Passer à l'image suivante
-            img = charger_image()
+
+            # Load the next image
+            img, next_filename = charger_image()  # Get the next image and filename
             if img is not None:
                 fig = px.imshow(img)
                 fig.update_layout(
                     dragmode="drawrect",
                     newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
                 )
-            else:
-                fig = None
+                
+                # Update the filename in store
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True
 
-            return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True
-    
+            else:
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), None, True
+
         except Exception as e:
-            # Message d'erreur si une exception est levée
             return html.Div("L'annotation a échoué, veuillez réessayer.", style={'font-family': 'Roboto, sans-serif'}), dash.no_update, True
 
     return html.Div("Veuillez réaliser une annotation avant de valider", className='text-center', style={'font-family': 'Roboto, sans-serif'}), dash.no_update, False
 
+# Callback to enable/disable the validation button based on annotations
 @callback(
     Output('bouton_valider', 'disabled'),
     Input('graph-styled-annotations', 'relayoutData'),
 )
-
 def activer_bouton(relayoutData):
     if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
         return False

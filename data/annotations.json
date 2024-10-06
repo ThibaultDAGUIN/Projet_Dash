@@ -4,7 +4,8 @@
     "image_name": "car426.jpg",
     "annotateur": "Vadim",
     "date": "2024-10-03",
-    "reviewer": "Ma\u00ebl",
+    "reviewer": "Vadim",
+    "review_date": "2024-10-06",
     "annotations": [
       {
         "editable": true,
@@ -52,7 +53,8 @@
     "image_name": "car425.jpg",
     "annotateur": "Thibault",
     "date": "2024-10-03",
-    "reviewer": "",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
     "annotations": [
       {
         "editable": true,
@@ -92,6 +94,72 @@
         "y0": 56.99798387096774,
         "x1": 383.28709677419357,
         "y1": 279.2173387096774
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "image_name": "car431.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 52.57867943548388,
+        "y0": 85.7141822076613,
+        "x1": 976.0367439516131,
+        "y1": 529.7916015625
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "image_name": "car436.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 65.0316362934728,
+        "y0": 120.59934899114795,
+        "x1": 427.18002339024713,
+        "y1": 288.26063931372863
       }
     ]
   }

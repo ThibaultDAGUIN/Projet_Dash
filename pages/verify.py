@@ -1,11 +1,12 @@
 import dash
 from dash import dcc, html, Input, Output, State
+import dash_bootstrap_components as dbc
 import plotly.express as px
 from skimage import io
 import os
 import json
 from urllib.parse import urlparse, parse_qs
-import dash_bootstrap_components as dbc
+from datetime import datetime
 
 dash.register_page(__name__, path_template="/verify")
 
@@ -40,7 +41,7 @@ layout = html.Div([
     html.H3("Vérifier l'Annotation"),
     dcc.Graph(id='annotation-graph'),
     dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),  # Valider button
-    html.Div(id="action-message")  # Display messages after validation
+    html.Div(id="action-message") 
 ])
 
 # Callback to display image with annotations
@@ -82,12 +83,9 @@ def display_image_with_annotations(href):
                         )
 
                     return fig
-                else:
-                    # Return an empty figure if image is not found
-                    return {}
     return {}
 
-# Callback to handle "Valider" button click and update the reviewer
+# Callback to handle "Valider" button click and update the reviewer and review_date
 @dash.callback(
     Output('action-message', 'children'),
     Input('valider-button', 'n_clicks'),
@@ -103,7 +101,7 @@ def handle_valider(n_clicks, href, user_name):
         annotation_id = params.get('id', [None])[0]
 
         if annotation_id:
-            # Load the annotation and update the reviewer
+            # Load the annotation and update the reviewer and review_date
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations = json.load(f)
@@ -112,6 +110,8 @@ def handle_valider(n_clicks, href, user_name):
                     if annotation['id'] == annotation_id:
                         # Update the reviewer field
                         annotation['reviewer'] = user_name
+                        # Add the review date in YYYY-MM-DD format
+                        annotation['review_date'] = datetime.now().strftime('%Y-%m-%d')  # Format date
                         break
 
                 # Save the updated annotations
