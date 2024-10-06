@@ -20,7 +20,7 @@ app.layout = html.Div([
             html.Span(id='user_status', className='text-light align-self-center', style={'font-size': '0.9rem', 'marginLeft': '100px', 'marginRight':'20px'}),
             dbc.Button('Déconnexion', color='danger', outline=True, className='text-light align-self-center', style={'font-size': '0.8rem'}, id='logout_button', n_clicks=0),
         ],
-        brand="Groupe MC BDD",
+        brand="Groupe Dash McQueen",
         color="#333333",
         dark=True,
         id='navbar',

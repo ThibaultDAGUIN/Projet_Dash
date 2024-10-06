@@ -33,7 +33,7 @@ layout = dbc.Container(
 
             dbc.Row(
                 dbc.Col(
-                    html.H1("Bienvenue sur l'interface d'annotation du groupe M2VT", className="text-center mt-5")
+                    html.H1("Bienvenue sur l'interface d'annotation du groupe Dash McQueen", className="text-center mt-5")
                 )
             ),
             dbc.Row(
