@@ -20,16 +20,13 @@ def get_annotation_by_id(annotation_id):
         with open(annotations_file, 'r') as f:
             annotations = json.load(f)
             for annotation in annotations:
-                if annotation['id'] == annotation_id:
+                if str(annotation['id']) == str(annotation_id):  # Ensure ID is compared as string
                     return annotation
     return None
 
 # Function to load image by name
 def load_image(image_name):
-    # Construct the full path for the image
     img_path = os.path.join(dossier_img, image_name)
-    
-    # Check if the image file exists
     if os.path.exists(img_path):
         return io.imread(img_path)
     else:
@@ -40,7 +37,7 @@ def load_image(image_name):
 layout = html.Div([
     html.H3("Vérifier l'Annotation"),
     dcc.Graph(id='annotation-graph'),
-    dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),  # Valider button
+    dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),
     html.Div(id="action-message") 
 ])
 
@@ -107,11 +104,11 @@ def handle_valider(n_clicks, href, user_name):
                     annotations = json.load(f)
                 
                 for annotation in annotations:
-                    if annotation['id'] == annotation_id:
+                    if str(annotation['id']) == str(annotation_id):  # Ensure ID comparison is correct
                         # Update the reviewer field
                         annotation['reviewer'] = user_name
                         # Add the review date in YYYY-MM-DD format
-                        annotation['review_date'] = datetime.now().strftime('%Y-%m-%d')  # Format date
+                        annotation['review_date'] = datetime.now().strftime('%Y-%m-%d')
                         break
 
                 # Save the updated annotations

@@ -170,6 +170,7 @@ def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename,
     Output('annotation_data', 'children'),
     Output('graph-styled-annotations', 'figure'),
     Output('bouton_valider', 'disabled', allow_duplicate=True),
+    Output('filename_store', 'data'),  # Add this output to update the filename store
     Input("bouton_valider", "n_clicks"),
     State('graph-styled-annotations', 'relayoutData'),
     State('user_name_store', 'data'),
@@ -177,9 +178,8 @@ def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename,
     prevent_initial_call=True
 )
 def afficher_annotation(n_clicks, relayoutData, user_name, filename):
-    # print(f"Filename from store: {filename}") 
     if n_clicks is None and user_name:
-        return dash.no_update, dash.no_update, True
+        return dash.no_update, dash.no_update, True, dash.no_update
 
     if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
         try:
@@ -217,16 +217,17 @@ def afficher_annotation(n_clicks, relayoutData, user_name, filename):
                     newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
                 )
                 
-                # Update the filename in store
-                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True
+                # Update the filename in the store
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True, next_filename
 
             else:
-                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), None, True
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), None, True, dash.no_update
 
         except Exception as e:
-            return html.Div("L'annotation a échoué, veuillez réessayer.", style={'font-family': 'Roboto, sans-serif'}), dash.no_update, True
+            return html.Div("L'annotation a échoué, veuillez réessayer.", style={'font-family': 'Roboto, sans-serif'}), dash.no_update, True, dash.no_update
 
-    return html.Div("Veuillez réaliser une annotation avant de valider", className='text-center', style={'font-family': 'Roboto, sans-serif'}), dash.no_update, False
+    return html.Div("Veuillez réaliser une annotation avant de valider", className='text-center', style={'font-family': 'Roboto, sans-serif'}), dash.no_update, False, dash.no_update
+
 
 # Callback to enable/disable the validation button based on annotations
 @callback(

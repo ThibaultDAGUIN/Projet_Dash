@@ -1,105 +1,7 @@
 [
   {
-    "id": "1",
-    "image_name": "car426.jpg",
-    "annotateur": "Vadim",
-    "date": "2024-10-03",
-    "reviewer": "Vadim",
-    "review_date": "2024-10-06",
-    "annotations": [
-      {
-        "editable": true,
-        "visible": true,
-        "showlegend": false,
-        "legend": "legend",
-        "legendgroup": "",
-        "legendgrouptitle": {
-          "text": "",
-          "font": {
-            "weight": "normal",
-            "style": "normal",
-            "variant": "normal",
-            "lineposition": "none",
-            "textcase": "normal",
-            "shadow": "none"
-          }
-        },
-        "legendrank": 1000,
-        "label": {
-          "text": "",
-          "texttemplate": ""
-        },
-        "xref": "x",
-        "yref": "y",
-        "layer": "above",
-        "opacity": 0.3,
-        "line": {
-          "color": "black",
-          "width": 2,
-          "dash": "solid"
-        },
-        "fillcolor": "cyan",
-        "fillrule": "evenodd",
-        "type": "rect",
-        "x0": 72.38387096774194,
-        "y0": 56.99798387096774,
-        "x1": 383.28709677419357,
-        "y1": 279.2173387096774
-      }
-    ]
-  },
-  {
-    "id": "2",
-    "image_name": "car425.jpg",
-    "annotateur": "Thibault",
-    "date": "2024-10-03",
-    "reviewer": "Ma\u00ebl",
-    "review_date": "2024-10-06",
-    "annotations": [
-      {
-        "editable": true,
-        "visible": true,
-        "showlegend": false,
-        "legend": "legend",
-        "legendgroup": "",
-        "legendgrouptitle": {
-          "text": "",
-          "font": {
-            "weight": "normal",
-            "style": "normal",
-            "variant": "normal",
-            "lineposition": "none",
-            "textcase": "normal",
-            "shadow": "none"
-          }
-        },
-        "legendrank": 1000,
-        "label": {
-          "text": "",
-          "texttemplate": ""
-        },
-        "xref": "x",
-        "yref": "y",
-        "layer": "above",
-        "opacity": 0.3,
-        "line": {
-          "color": "black",
-          "width": 2,
-          "dash": "solid"
-        },
-        "fillcolor": "cyan",
-        "fillrule": "evenodd",
-        "type": "rect",
-        "x0": 72.38387096774194,
-        "y0": 56.99798387096774,
-        "x1": 383.28709677419357,
-        "y1": 279.2173387096774
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "image_name": "car431.jpg",
+    "id": 1,
+    "image_name": "car428.jpg",
     "annotateur": "Manon",
     "date": "2024-10-06",
     "reviewer": "",
@@ -123,15 +25,15 @@
         "fillcolor": "cyan",
         "fillrule": "evenodd",
         "type": "rect",
-        "x0": 52.57867943548388,
-        "y0": 85.7141822076613,
-        "x1": 976.0367439516131,
-        "y1": 529.7916015625
+        "x0": 11.713121771043342,
+        "y0": 150.8625754079511,
+        "x1": 206.4937669323336,
+        "y1": 252.1141883111769
       }
     ]
   },
   {
-    "id": 4,
+    "id": 2,
     "image_name": "car436.jpg",
     "annotateur": "Manon",
     "date": "2024-10-06",
@@ -156,10 +58,109 @@
         "fillcolor": "cyan",
         "fillrule": "evenodd",
         "type": "rect",
-        "x0": 65.0316362934728,
-        "y0": 120.59934899114795,
-        "x1": 427.18002339024713,
-        "y1": 288.26063931372863
+        "x0": 55.45099113218247,
+        "y0": 125.38967157179312,
+        "x1": 426.22195887411806,
+        "y1": 284.42838124921246
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "image_name": "flashmcqueen.jpeg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "",
+    "review_date": "",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 30.281905241935487,
+        "y0": 115.44321446572582,
+        "x1": 994.6173891129033,
+        "y1": 513.0690209173388
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "image_name": "208.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 198.37207799111647,
+        "y0": 149.7716024091167,
+        "x1": 714.1785296040199,
+        "y1": 466.1328927316974
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "image_name": "porsche 911-gt3rs.jpeg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 4.848605642011087,
+        "y0": 39.31418831117691,
+        "x1": 447.60989596459154,
+        "y1": 234.09483347246723
       }
     ]
   }
