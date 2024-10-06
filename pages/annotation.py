@@ -41,7 +41,7 @@ columns = [
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Review Date', 'id': 'Review Date'},
-    {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}
+    {'name': 'Verifier', 'id': 'Verifier'}  # Removed 'presentation' for markdown
 ]
 
 # Layout for the annotation page
@@ -53,14 +53,17 @@ layout = html.Div([
         id='annotation-table',
         columns=columns,
         data=[
-            {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}
+            {**row, 'Verifier': f'/verify?id={row["id"]}'}
             for row in prepare_table_data()
         ],
         style_table={'width': '80%', 'margin': 'auto'},
         style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'},
         style_cell={'textAlign': 'left'},
         page_size=10,
-    )
+    ),
+    
+    # Hidden Div for state or navigation
+    html.Div(id='hidden-div', style={'display': 'none'}),
 ])
 
 # Callback to update the table dynamically
@@ -71,6 +74,23 @@ layout = html.Div([
 def update_table(_):
     """Callback to update the DataTable with the latest annotation data."""
     return [
-        {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}
+        {**row, 'Verifier': f'/verify?id={row["id"]}'}
         for row in prepare_table_data()
     ]
+
+# Callback to handle clicks on the Verifier links
+@dash.callback(
+    Output('hidden-div', 'children'),  # Using a hidden div to capture link clicks
+    Input('annotation-table', 'active_cell')
+)
+def handle_verifier_click(active_cell):
+    """Callback to handle clicks on the Verifier link."""
+    if active_cell and active_cell['column_id'] == 'Verifier':
+        row_index = active_cell['row']  # Get the row index of the clicked cell
+        
+        # Retrieve the full DataTable data
+        data = prepare_table_data()  # You can also store this in a global variable if you want
+        id_value = data[row_index]['id']  # Get the id from the corresponding row
+
+        return dcc.Location(href=f'/verify?id={id_value}', id='redirect')
+    return dash.no_update

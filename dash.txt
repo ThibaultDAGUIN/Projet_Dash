@@ -124,9 +124,9 @@ if __name__ == '__main__':
 ```json
 [
   {
-    "id": 3,
-    "image_name": "car426.jpg",
-    "annotateur": "Ma\u00ebl",
+    "id": 1,
+    "image_name": "car428.jpg",
+    "annotateur": "Vadim",
     "date": "2024-10-06",
     "reviewer": "",
     "review_date": "",
@@ -149,86 +149,20 @@ if __name__ == '__main__':
         "fillcolor": "cyan",
         "fillrule": "evenodd",
         "type": "rect",
-        "x0": 75.46774193548386,
-        "y0": 135.63418736611644,
-        "x1": 231.4548387096774,
-        "y1": 256.1696712370842
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "image_name": "car426.jpg",
-    "annotateur": "Ma\u00ebl",
-    "date": "2024-10-06",
-    "reviewer": "",
-    "review_date": "",
-    "annotations": [
-      {
-        "editable": true,
-        "label": {
-          "text": "",
-          "texttemplate": ""
-        },
-        "xref": "x",
-        "yref": "y",
-        "layer": "above",
-        "opacity": 0.3,
-        "line": {
-          "color": "black",
-          "width": 2,
-          "dash": "solid"
-        },
-        "fillcolor": "cyan",
-        "fillrule": "evenodd",
-        "type": "rect",
-        "x0": 19.43570241620463,
-        "y0": 43.60451089182207,
-        "x1": 447.60989596459154,
-        "y1": 240.10128508537045
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "image_name": "car426.jpg",
-    "annotateur": "Ma\u00ebl",
-    "date": "2024-10-06",
-    "reviewer": "",
-    "review_date": "",
-    "annotations": [
-      {
-        "editable": true,
-        "label": {
-          "text": "",
-          "texttemplate": ""
-        },
-        "xref": "x",
-        "yref": "y",
-        "layer": "above",
-        "opacity": 0.3,
-        "line": {
-          "color": "black",
-          "width": 2,
-          "dash": "solid"
-        },
-        "fillcolor": "cyan",
-        "fillrule": "evenodd",
-        "type": "rect",
-        "x0": 19.43570241620463,
-        "y0": 29.87547863375756,
-        "x1": 447.60989596459154,
+        "x0": 11.713121771043342,
+        "y0": 150.8625754079511,
+        "x1": 206.4937669323336,
         "y1": 252.1141883111769
       }
     ]
   },
   {
-    "id": 6,
-    "image_name": "car426.jpg",
-    "annotateur": "Ma\u00ebl",
+    "id": 2,
+    "image_name": "car436.jpg",
+    "annotateur": "Manon",
     "date": "2024-10-06",
-    "reviewer": "",
-    "review_date": "",
+    "reviewer": "Vadim",
+    "review_date": "2024-10-06",
     "annotations": [
       {
         "editable": true,
@@ -248,20 +182,20 @@ if __name__ == '__main__':
         "fillcolor": "cyan",
         "fillrule": "evenodd",
         "type": "rect",
-        "x0": 53.303499283329145,
-        "y0": 115.61934784919985,
-        "x1": 428.91640250913565,
-        "y1": 329.76450913952243
+        "x0": 55.45099113218247,
+        "y0": 125.38967157179312,
+        "x1": 426.22195887411806,
+        "y1": 284.42838124921246
       }
     ]
   },
   {
-    "id": 7,
-    "image_name": "car426.jpg",
-    "annotateur": "Ma\u00ebl",
+    "id": 3,
+    "image_name": "flashmcqueen.jpeg",
+    "annotateur": "Manon",
     "date": "2024-10-06",
-    "reviewer": "",
-    "review_date": "",
+    "reviewer": "Vadim",
+    "review_date": "2024-10-06",
     "annotations": [
       {
         "editable": true,
@@ -281,10 +215,76 @@ if __name__ == '__main__':
         "fillcolor": "cyan",
         "fillrule": "evenodd",
         "type": "rect",
-        "x0": 51.61873306766635,
-        "y0": 123.47354253953506,
-        "x1": 427.18002339024713,
-        "y1": 292.09289737824474
+        "x0": 30.281905241935487,
+        "y0": 115.44321446572582,
+        "x1": 994.6173891129033,
+        "y1": 513.0690209173388
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "image_name": "208.jpg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 198.37207799111647,
+        "y0": 149.7716024091167,
+        "x1": 714.1785296040199,
+        "y1": 466.1328927316974
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "image_name": "porsche 911-gt3rs.jpeg",
+    "annotateur": "Manon",
+    "date": "2024-10-06",
+    "reviewer": "Ma\u00ebl",
+    "review_date": "2024-10-06",
+    "annotations": [
+      {
+        "editable": true,
+        "label": {
+          "text": "",
+          "texttemplate": ""
+        },
+        "xref": "x",
+        "yref": "y",
+        "layer": "above",
+        "opacity": 0.3,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "fillrule": "evenodd",
+        "type": "rect",
+        "x0": 4.848605642011087,
+        "y0": 39.31418831117691,
+        "x1": 447.60989596459154,
+        "y1": 234.09483347246723
       }
     ]
   }
@@ -349,6 +349,7 @@ import dash
 from dash import html, dcc, dash_table, Input, Output, State
 import json
 import os
+from datetime import datetime
 
 dash.register_page(__name__)
 
@@ -365,15 +366,20 @@ def prepare_table_data():
     """Prepare data for the DataTable from annotations."""
     annotations = load_annotations()
     table_data = []
+    
     for annotation in annotations:
         table_data.append({
             'Image Name': annotation.get('image_name', 'N/A'),
-            'Date': annotation.get('date', 'N/A'),  # Assuming this is another field in your JSON
+            'Date': annotation.get('date', 'N/A'),
             'Annotateur': annotation.get('annotateur', 'Anonyme'),
             'Reviewer': annotation.get('reviewer', 'N/A'),
-            'Review Date': annotation.get('review_date', 'N/A'),  # Add Review Date
-            'id': annotation.get('id')  # Pass ID for Verifier button
+            'Review Date': annotation.get('review_date', 'N/A'),
+            'id': annotation.get('id')
         })
+    
+    # Sorting the data
+    table_data.sort(key=lambda x: (x['Reviewer'] == 'N/A', x['Reviewer'], datetime.strptime(x['Date'], '%Y-%m-%d') if x['Date'] != 'N/A' else datetime.min))
+    
     return table_data
 
 columns = [
@@ -381,7 +387,7 @@ columns = [
     {'name': 'Date', 'id': 'Date'},
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
-    {'name': 'Review Date', 'id': 'Review Date'},  # New column for Review Date
+    {'name': 'Review Date', 'id': 'Review Date'},
     {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}
 ]
 
@@ -394,7 +400,7 @@ layout = html.Div([
         id='annotation-table',
         columns=columns,
         data=[
-            {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}  # Create link for Verifier button
+            {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}
             for row in prepare_table_data()
         ],
         style_table={'width': '80%', 'margin': 'auto'},
@@ -412,7 +418,7 @@ layout = html.Div([
 def update_table(_):
     """Callback to update the DataTable with the latest annotation data."""
     return [
-        {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}  # Create link for Verifier button
+        {**row, 'Verifier': f'[Verifier](/verify?id={row["id"]})'}
         for row in prepare_table_data()
     ]
 
@@ -425,14 +431,19 @@ import dash
 from dash import dcc, html, Input, Output, callback, State
 from skimage import io
 import plotly_express as px
-import os, json, random, base64
+import os
+import json
+import random
+import base64
 import dash_bootstrap_components as dbc
 from datetime import datetime
 
+# Define paths for images and JSON files
 dossier_img = './data/cars/'
 users_file = './data/users.json'
 annotations_file = './data/annotations.json'
 
+# Function to retrieve a random image
 def recup_img_aleatoire():
     files = os.listdir(dossier_img)
     images = [file for file in files if file.endswith(('png', 'jpg', 'jpeg'))]
@@ -441,12 +452,15 @@ def recup_img_aleatoire():
         return os.path.join(dossier_img, random_image)
     return None
 
+# Function to load an image and return it with its filename
 def charger_image():
     chemin_image = recup_img_aleatoire()
     if chemin_image:
-        return io.imread(chemin_image)
-    return None
+        img = io.imread(chemin_image)
+        return img, os.path.basename(chemin_image)  # Return both image and filename
+    return None, None  # Return None for both if no image is found
 
+# Function to save uploaded image
 def save_img(content, filename):
     data = content.split(",")[1]
     img_data = base64.b64decode(data)
@@ -456,9 +470,11 @@ def save_img(content, filename):
         f.write(img_data)
     return filepath
 
+# Register the Dash app page
 dash.register_page(__name__)
 
-img = charger_image()
+# Load initial image and filename
+img, filename = charger_image()
 
 if img is not None:
     fig = px.imshow(img)
@@ -469,10 +485,14 @@ if img is not None:
 else:
     fig = None
 
+# Layout of the Dash app
 layout = html.Div(
     [
         html.H3("Interface d'annotation", className='text-center my-3'),
         dcc.Graph(id="graph-styled-annotations", figure=fig),
+
+        # Store the filename in hidden storage
+        dcc.Store(id='filename_store', data=filename),
 
         dcc.Upload(
             id="import-image",
@@ -529,13 +549,14 @@ layout = html.Div(
             className='my-3',
         ),
         html.Pre(id="annotation_data", className='my-3'),
-        dcc.Store(id='user_name_store', storage_type='local'), # Pour stocker le nom d'utilisateur en cours sur la session
+        dcc.Store(id='user_name_store', storage_type='local'), # Store the current user's name in the session
     ]
 )
 
+# Callback to handle the upload modal and image display
 @callback(
-    Output('modal', 'is_open'), # Ouvrir ou fermer le modal
-    Output('graph-styled-annotations', 'figure', allow_duplicate=True), # Mettre à jour l'image affichée
+    Output('modal', 'is_open'), # Open or close the modal
+    Output('graph-styled-annotations', 'figure', allow_duplicate=True), # Update the displayed image
     Input('import-image', 'contents'),
     Input('fermer_modal', 'n_clicks'),
     Input('confirmer_modal', 'n_clicks'),
@@ -544,98 +565,104 @@ layout = html.Div(
     State('graph-styled-annotations', 'figure'),
     prevent_initial_call=True
 )
-
 def activer_modal(contenu_img, cancel_clicks, confirm_clicks, is_open, filename, current_fig):
-    # Ouvrir le modal lorsque l'image est importée
+    # Open the modal when an image is uploaded
     if contenu_img is not None and is_open is False:
         return True, current_fig
     
-    # Si "Non" est cliqué, fermer le modal sans rien faire
+    # If "No" is clicked, close the modal without doing anything
     if cancel_clicks:
         return False, current_fig
     
-    # Si "Oui" est cliqué, sauvegarder l'image
+    # If "Yes" is clicked, save the image
     if confirm_clicks:
         save_img(contenu_img, filename)
         
-        # Charger l'image sauvegardée pour l'afficher
-        img = io.imread(os.path.join(dossier_img, filename))
-        fig = px.imshow(img)
-        fig.update_layout(
-            dragmode="drawrect",
-            newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
-        )
-        return False, fig
+        # Load the saved image to display
+        img, next_filename = charger_image()  # Get the next image and its filename
+        if img is not None:
+            fig = px.imshow(img)
+            fig.update_layout(
+                dragmode="drawrect",
+                newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
+            )
+            # Update the filename in store
+            return False, fig
+
+        return False, None  # In case no next image is available
     
-    # Si aucune action n'a été prise, ne rien changer
+    # If no action has been taken, do not change anything
     return is_open, current_fig
 
+# Callback to handle annotation submission
 @callback(
     Output('annotation_data', 'children'),
     Output('graph-styled-annotations', 'figure'),
     Output('bouton_valider', 'disabled', allow_duplicate=True),
+    Output('filename_store', 'data'),  # Add this output to update the filename store
     Input("bouton_valider", "n_clicks"),
     State('graph-styled-annotations', 'relayoutData'),
     State('user_name_store', 'data'),
-    prevent_initial_call='initial_duplicate'
+    State('filename_store', 'data'), 
+    prevent_initial_call=True
 )
+def afficher_annotation(n_clicks, relayoutData, user_name, filename):
+    if n_clicks is None and user_name:
+        return dash.no_update, dash.no_update, True, dash.no_update
 
-def afficher_annotation(n_clicks, relayoutData, user_name):
-    if n_clicks is None and user_name :
-        return dash.no_update, dash.no_update, True
-        # Vérifier si des annotations existent
     if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
-        try :
-
-            # Charger les annotations précédentes
+        try:
+            # Load existing annotations
             annotations_data = []
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations_data = json.load(f)
 
-            # Modifier le fichier json annotation avec le nom de l'annotateur
+            # Create a new annotation entry
             new_annotation = {
                 'id': len(annotations_data) + 1,
+                'image_name': filename,  # Ensure this is set correctly
                 'annotateur': user_name,
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'reviewer': '',
+                "review_date": '',
                 'annotations': relayoutData['shapes']
             }
 
-            # Ajouter les nouvelles annotations
+            # Append new annotation and save
             annotations_data.append(new_annotation)
-
-            # Sauvegarder les annotations dans un fichier JSON
             with open(annotations_file, 'w') as f:
                 json.dump(annotations_data, f, indent=2)
 
-            # Message de confirmation
+            # Confirmation message
             message = f"L'annotation réalisée par {user_name} a bien été enregistrée."
-            
-            # Passer à l'image suivante
-            img = charger_image()
+
+            # Load the next image
+            img, next_filename = charger_image()  # Get the next image and filename
             if img is not None:
                 fig = px.imshow(img)
                 fig.update_layout(
                     dragmode="drawrect",
                     newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2)),
                 )
+                
+                # Update the filename in the store
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True, next_filename
+
             else:
-                fig = None
+                return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), None, True, dash.no_update
 
-            return html.Div(message, className='text-center', style={'font-family': 'Roboto, sans-serif'}), fig, True
-    
         except Exception as e:
-            # Message d'erreur si une exception est levée
-            return html.Div("L'annotation a échoué, veuillez réessayer.", style={'font-family': 'Roboto, sans-serif'}), dash.no_update, True
+            return html.Div("L'annotation a échoué, veuillez réessayer.", style={'font-family': 'Roboto, sans-serif'}), dash.no_update, True, dash.no_update
 
-    return html.Div("Veuillez réaliser une annotation avant de valider", className='text-center', style={'font-family': 'Roboto, sans-serif'}), dash.no_update, False
+    return html.Div("Veuillez réaliser une annotation avant de valider", className='text-center', style={'font-family': 'Roboto, sans-serif'}), dash.no_update, False, dash.no_update
 
+
+# Callback to enable/disable the validation button based on annotations
 @callback(
     Output('bouton_valider', 'disabled'),
     Input('graph-styled-annotations', 'relayoutData'),
 )
-
 def activer_bouton(relayoutData):
     if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
         return False
@@ -826,7 +853,7 @@ from skimage import io
 import os
 import json
 from urllib.parse import urlparse, parse_qs
-from datetime import datetime  # Import datetime for the review date
+from datetime import datetime
 
 dash.register_page(__name__, path_template="/verify")
 
@@ -840,16 +867,13 @@ def get_annotation_by_id(annotation_id):
         with open(annotations_file, 'r') as f:
             annotations = json.load(f)
             for annotation in annotations:
-                if annotation['id'] == annotation_id:
+                if str(annotation['id']) == str(annotation_id):  # Ensure ID is compared as string
                     return annotation
     return None
 
 # Function to load image by name
 def load_image(image_name):
-    # Construct the full path for the image
     img_path = os.path.join(dossier_img, image_name)
-    
-    # Check if the image file exists
     if os.path.exists(img_path):
         return io.imread(img_path)
     else:
@@ -860,8 +884,8 @@ def load_image(image_name):
 layout = html.Div([
     html.H3("Vérifier l'Annotation"),
     dcc.Graph(id='annotation-graph'),
-    dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),  # Valider button
-    html.Div(id="action-message")  # Display messages after validation
+    dbc.Button("Valider", id="valider-button", color="success", n_clicks=0),
+    html.Div(id="action-message") 
 ])
 
 # Callback to display image with annotations
@@ -927,11 +951,11 @@ def handle_valider(n_clicks, href, user_name):
                     annotations = json.load(f)
                 
                 for annotation in annotations:
-                    if annotation['id'] == annotation_id:
+                    if str(annotation['id']) == str(annotation_id):  # Ensure ID comparison is correct
                         # Update the reviewer field
                         annotation['reviewer'] = user_name
                         # Add the review date in YYYY-MM-DD format
-                        annotation['review_date'] = datetime.now().strftime('%Y-%m-%d')  # Format date
+                        annotation['review_date'] = datetime.now().strftime('%Y-%m-%d')
                         break
 
                 # Save the updated annotations
