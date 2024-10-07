@@ -1,20 +1,20 @@
 [
   {
     "id": 1,
-    "nom_image": "porsche 911-gt3rs.jpeg",
+    "nom_image": "car432.jpg",
     "annotateur": "Ma\u00ebl",
     "date_annotation": "2024-10-07",
     "reviewer": "Ma\u00ebl",
     "date_review": "2024-10-07",
-    "marque": null,
-    "couleur": null,
+    "marque": "Fiat",
+    "couleur": "Noir",
     "annotations": [
       {
         "type": "rect",
-        "x0": 13.843985477570563,
-        "y0": 51.32709153698337,
-        "x1": 445.4504370904737,
-        "y1": 240.10128508537045,
+        "x0": 17.083870967741937,
+        "y0": 69.37676952731225,
+        "x1": 439.0967741935484,
+        "y1": 227.63160823698968,
         "line": {
           "color": "black",
           "width": 2,

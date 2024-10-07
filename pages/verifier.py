@@ -46,6 +46,61 @@ layout = html.Div([
 
     html.H3("Vérifier l'Annotation", className='text-center my-3'),
     dcc.Graph(id='annotation-graph'),
+    dbc.Row(
+            [
+                dbc.Col(
+                    dcc.Dropdown(
+                        placeholder="Marque du véhicule",
+                        id="marque_vehicule",
+                        style={'width': '400px', 'text-align': 'center'},
+                        options=[
+                            {'label': 'Audi', 'value': 'Audi'},
+                            {'label': 'BMW', 'value': 'BMW'},
+                            {'label': 'Citroën', 'value': 'Citroen'},
+                            {'label': 'Dacia', 'value': 'Dacia'},
+                            {'label': 'Fiat', 'value': 'Fiat'},
+                            {'label': 'Ford', 'value': 'Ford'},
+                            {'label': 'Mercedes', 'value': 'Mercedes'},
+                            {'label': 'Peugeot', 'value': 'Peugeot'},
+                            {'label': 'Renault', 'value': 'Renault'},
+                            {'label': 'Toyota', 'value': 'Toyota'},
+                            {'label': 'Volkswagen', 'value': 'Volkswagen'},
+                            {'label': 'Mazda', 'value': 'Mazda'},
+                            {'label': 'Tesla', 'value': 'Tesla'},
+                            {'label': 'Porsche', 'value': 'Porsche'},
+                            {'label': 'Autre', 'value': 'Autre'},
+                        ],
+                    ),
+                    width='auto'
+                ),
+                
+                dbc.Col(
+                    dcc.Dropdown(
+                        placeholder="Couleur du véhicule",
+                        id="couleur_vehicule",
+                        style={'width': '400px', 'text-align': 'center'},
+                        options=[
+                            {'label': 'Blanc', 'value': 'Blanc'},
+                            {'label': 'Noir', 'value': 'Noir'},
+                            {'label': 'Bleu', 'value': 'Bleu'},
+                            {'label': 'Rouge', 'value': 'Rouge'},
+                            {'label': 'Vert', 'value': 'Vert'},
+                            {'label': 'Jaune', 'value': 'Jaune'},
+                            {'label': 'Gris', 'value': 'Gris'},
+                            {'label': 'Marron', 'value': 'Marron'},
+                            {'label': 'Orange', 'value': 'Orange'},
+                            {'label': 'Violet', 'value': 'Violet'},
+                            {'label': 'Rose', 'value': 'Rose'},
+                            {'label': 'Autre', 'value': 'Autre'},
+                        ],
+                    ),
+                    width='auto'
+                ),
+            ],
+            justify='center',
+            className='d-flex my-3',
+            style={'alignItems': 'center'}
+        ),
 
     # Centrer les boutons en utilisant une ligne Bootstrap
     dbc.Row(
@@ -123,10 +178,12 @@ def display_image_with_annotations(href):
     [State('annotation-graph', 'relayoutData'), 
     State('url', 'href'), 
     State('user_name_store', 'data'), 
-    State('modification-store', 'data')], 
+    State('modification-store', 'data'),
+    State('marque_vehicule', 'value'), 
+    State('couleur_vehicule', 'value')], 
     prevent_initial_call='initial_duplicate'
 )
-def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_name, modification_made):
+def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_name, modification_made, marque, couleur):
     ctx = dash.callback_context
 
     if not ctx.triggered:
@@ -170,6 +227,10 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
                     # Always update the reviewer and date_review fields
                     annotation['reviewer'] = user_name
                     annotation['date_review'] = datetime.now().strftime('%Y-%m-%d')
+
+                    # Update marque and couleur from the dropdowns
+                    annotation['marque'] = marque  # Update marque
+                    annotation['couleur'] = couleur  # Update couleur
 
                     updated = True
                     break  # Stop after finding and updating the right annotation

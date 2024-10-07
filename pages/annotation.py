@@ -23,10 +23,12 @@ def prepare_table_data():
     for annotation in annotations:
         table_data.append({
             'Nom Image': annotation.get('nom_image', 'N/A'),
+            'Marque': annotation.get('marque', 'N/A'),
+            'Couleur': annotation.get('couleur', 'N/A'),
             'Date': annotation.get('date_annotation', 'N/A'),
             'Annotateur': annotation.get('annotateur', 'Anonyme'),
-            'Reviewer': annotation.get('reviewer', 'N/A'),
             'Date Review': annotation.get('date_review', 'N/A'),
+            'Reviewer': annotation.get('reviewer', 'N/A'),
             'id': annotation.get('id')
         })
     
@@ -37,10 +39,12 @@ def prepare_table_data():
 
 columns = [
     {'name': 'Nom Image', 'id': 'Nom Image'},
+    {'name': 'Marque', 'id': 'Marque'},
+    {'name': 'Couleur', 'id': 'Couleur'},
     {'name': 'Date', 'id': 'Date'},
     {'name': 'Annotateur', 'id': 'Annotateur'},
-    {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Date Review', 'id': 'Date Review'},
+    {'name': 'Reviewer', 'id': 'Reviewer'},
     {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown pour Verifier
 ]
 
