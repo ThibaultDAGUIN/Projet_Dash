@@ -36,11 +36,11 @@ def prepare_table_data():
     return table_data
 
 columns = [
-    {'name': 'Nom Image', 'id': 'Image Name'},
+    {'name': 'Nom Image', 'id': 'Nom Image'},
     {'name': 'Date', 'id': 'Date'},
     {'name': 'Annotateur', 'id': 'Annotateur'},
     {'name': 'Reviewer', 'id': 'Reviewer'},
-    {'name': 'Date Review', 'id': 'Review Date'},
+    {'name': 'Date Review', 'id': 'Date Review'},
     {'name': 'Verifier', 'id': 'Verifier', 'presentation': 'markdown'}  # markdown pour Verifier
 ]
 
