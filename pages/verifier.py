@@ -31,7 +31,6 @@ def get_annotation_by_id(annotation_id):
                 return None
     return None
 
-
 # Fonction pour charger une image par nom
 def load_image(image_name):
     img_path = os.path.join(dossier_img, image_name)
@@ -43,6 +42,8 @@ def load_image(image_name):
 
 # Mise en page pour la page de vérification
 layout = html.Div([
+    dcc.Store(id='modification-store', data=False),  # Store to track if modification happened
+
     html.H3("Vérifier l'Annotation", className='text-center my-3'),
     dcc.Graph(id='annotation-graph'),
 
@@ -69,7 +70,6 @@ layout = html.Div([
     html.Div(id="action-message"),
     dcc.Location(id="redirect", refresh=True)
 ])
-
 
 # Callback pour afficher l'image avec les annotations
 @dash.callback(
@@ -113,13 +113,20 @@ def display_image_with_annotations(href):
                     return fig
     return {}
 
+# Callback pour gérer les boutons "Valider" et "Supprimer"
 @dash.callback(
-    [Output('annotation-graph', 'figure', allow_duplicate=True), Output('action-message', 'children', allow_duplicate=True), Output('redirect', 'href')],
-    [Input('valider-button', 'n_clicks'), Input('supprimer-button', 'n_clicks')],
-    [State('annotation-graph', 'relayoutData'), State('url', 'href'), State('user_name_store', 'data')],
+    [Output('annotation-graph', 'figure', allow_duplicate=True), 
+    Output('action-message', 'children', allow_duplicate=True), 
+    Output('redirect', 'href')],
+    [Input('valider-button', 'n_clicks'), 
+    Input('supprimer-button', 'n_clicks')],
+    [State('annotation-graph', 'relayoutData'), 
+    State('url', 'href'), 
+    State('user_name_store', 'data'), 
+    State('modification-store', 'data')], 
     prevent_initial_call='initial_duplicate'
 )
-def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_name):
+def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_name, modification_made):
     ctx = dash.callback_context
 
     if not ctx.triggered:
@@ -137,28 +144,30 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
             with open(annotations_file, 'r') as f:
                 annotations = json.load(f)
 
-            # Find and update the shapes for the selected annotation
+            # Find the annotation to update
             updated = False
             for annotation in annotations:
                 if str(annotation['id']) == str(annotation_id):
-                    # Extract new annotations from relayoutData
-                    new_annotations = []
-                    for shape in relayout_data.get('shapes', []):
-                        new_annotations.append({
-                            'type': shape['type'],
-                            'x0': shape['x0'],
-                            'y0': shape['y0'],
-                            'x1': shape['x1'],
-                            'y1': shape['y1'],
-                            'line': shape['line'],
-                            'fillcolor': shape.get('fillcolor', ''),
-                            'opacity': shape.get('opacity', 1)
-                        })
+                    # Si modif = True (modification button has been clicked), update annotations
+                    if modification_made:
+                        # Extract new annotations from relayoutData
+                        new_annotations = []
+                        for shape in relayout_data.get('shapes', []):
+                            new_annotations.append({
+                                'type': shape['type'],
+                                'x0': shape['x0'],
+                                'y0': shape['y0'],
+                                'x1': shape['x1'],
+                                'y1': shape['y1'],
+                                'line': shape['line'],
+                                'fillcolor': shape.get('fillcolor', ''),
+                                'opacity': shape.get('opacity', 1)
+                            })
 
-                    # Update the annotation's shapes with the new ones
-                    annotation['annotations'] = new_annotations
+                        # Update the annotation's shapes with the new ones
+                        annotation['annotations'] = new_annotations
 
-                    # Update the reviewer and date_review fields
+                    # Always update the reviewer and date_review fields
                     annotation['reviewer'] = user_name
                     annotation['date_review'] = datetime.now().strftime('%Y-%m-%d')
 
@@ -204,12 +213,12 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
 
     return dash.no_update, "Une erreur s'est produite lors de l'action.", dash.no_update
 
-
 # Callback pour gérer le clic sur le bouton Modifier
 @dash.callback(
     [Output('annotation-graph', 'figure', allow_duplicate=True), 
      Output('action-message', 'children', allow_duplicate=True), 
-     Output('supprimer-button', 'disabled')],
+     Output('supprimer-button', 'disabled'),
+     Output('modification-store', 'data')],  
     [Input('modifier-button', 'n_clicks')],
     State('url', 'href'),
     prevent_initial_call='initial_duplicate'
@@ -254,6 +263,6 @@ def handle_modifier_button(modifier_clicks, href):
                             newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2))
                         )
 
-                        return fig, html.Div("L'ancienne annotation a été supprimée. Vous pouvez dessiner une nouvelle annotation.", className='text-center'), True
+                        return fig, html.Div("L'ancienne annotation a été supprimée. Vous pouvez dessiner une nouvelle annotation.", className='text-center'), True, True  # Set modification to True
 
-    return dash.no_update, dash.no_update, False
+    return dash.no_update, dash.no_update, False, False  # Set modification to False if not clicked
