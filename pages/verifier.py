@@ -8,15 +8,17 @@ import json
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 
+# Initialize the Dash app and set suppress_callback_exceptions to True
+app = dash.Dash(__name__, suppress_callback_exceptions=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+# Enregistrement de la page avec un modèle de chemin spécifique
 dash.register_page(__name__, path_template="/verifier")
 
-
-
-# Paths to files
+# Chemins vers les fichiers
 dossier_img = './data/cars/'
 annotations_file = './data/annotations.json'
 
-# Function to load an annotation by ID
+# Fonction pour charger une annotation par ID
 def get_annotation_by_id(annotation_id):
     if os.path.exists(annotations_file):
         with open(annotations_file, 'r') as f:
@@ -28,23 +30,23 @@ def get_annotation_by_id(annotation_id):
                         return annotation
     return None
 
-# Function to load an image by name
+# Fonction pour charger une image par nom
 def load_image(image_name):
     img_path = os.path.join(dossier_img, image_name)
     if os.path.exists(img_path):
         return io.imread(img_path)
     else:
-        print(f"Image {image_name} not found at path {img_path}")
+        print(f"Image {image_name} non trouvée à l'emplacement {img_path}")
         return None
 
-# Layout for the verification page
+# Mise en page de la page de vérification
 layout = html.Div([
-    dcc.Store(id='modification-store', data=False),  # Store to track if modification happened
+    dcc.Store(id='modification-store', data=False),  # Store pour suivre si une modification a eu lieu
 
     html.H3("Vérifier l'Annotation", className='text-center my-3'),
     dcc.Graph(id='annotation-graph'),
     
-    # Dropdowns for vehicle brand and color
+    # Dropdowns pour la marque et la couleur du véhicule
     dbc.Row([
         dbc.Col(
             dcc.Dropdown(
@@ -68,7 +70,6 @@ layout = html.Div([
                     {'label': 'Porsche', 'value': 'Porsche'},
                     {'label': 'Autre', 'value': 'Autre'},
                 ],
-                #    value=marque_value,
             ),
             width='auto'
         ),
@@ -92,7 +93,6 @@ layout = html.Div([
                     {'label': 'Rose', 'value': 'Rose'},
                     {'label': 'Autre', 'value': 'Autre'},
                 ],
-                # value=couleur_value,
             ),
             width='auto'
         ),
@@ -102,7 +102,7 @@ layout = html.Div([
     style={'alignItems': 'center'}
     ),
 
-    # Center buttons using a Bootstrap row
+    # Centrer les boutons en utilisant une rangée Bootstrap
     dbc.Row([
         dbc.Col(
             dbc.Button("Valider l'annotation", id="valider-button", color="success", n_clicks=0),
@@ -117,37 +117,40 @@ layout = html.Div([
             width="auto"
         )
     ],
-    justify="center",  # Center buttons
-    className="my-3"  # Add vertical margin
+    justify="center",  # Centrer les boutons
+    className="my-3"  # Ajouter une marge verticale
     ),
 
-    html.Div(id="action-message"),
-    dcc.Location(id="redirect", refresh=True)
+    html.Div(id="action-message"),  # Zone pour afficher les messages d'action
+    dcc.Location(id="redirect", refresh=True)  # Pour gérer les redirections
 ])
 
-# Callback to display the image with annotations
+# Callback pour afficher l'image avec les annotations et définir les valeurs des dropdowns
 @dash.callback(
-    Output('annotation-graph', 'figure', allow_duplicate=True),
+    [Output('annotation-graph', 'figure', allow_duplicate=True),
+     Output('marque_vehicule', 'value'),
+     Output('couleur_vehicule', 'value')],
     Input('url', 'href'),
     prevent_initial_call='initial_duplicate'
 )
+
 def display_image_with_annotations(href):
     if href:
-        # Parse the URL to extract the annotation ID
+        # Analyser l'URL pour extraire l'ID de l'annotation
         parsed_url = urlparse(href)
         params = parse_qs(parsed_url.query)
         annotation_id = params.get('id', [None])[0]
 
         if annotation_id:
-            # Get the annotation by ID
+            # Obtenir l'annotation par ID
             annotation = get_annotation_by_id(annotation_id)
             if annotation:
-                # Load the corresponding image
+                # Charger l'image correspondante
                 image = load_image(annotation['nom_image'])
                 if image is not None:
                     fig = px.imshow(image)
 
-                    # Iterate through each annotation shape and add to the figure
+                    # Itérer à travers chaque forme d'annotation et l'ajouter à la figure
                     for ann in annotation['annotations']:
                         fig.add_shape(
                             type=ann['type'],
@@ -164,49 +167,54 @@ def display_image_with_annotations(href):
                             opacity=ann['opacity']
                         )
 
-                    return fig
-    return {}
+                    # Définir les valeurs des dropdowns pour marque et couleur
+                    marque_value = annotation.get('marque', None)
+                    couleur_value = annotation.get('couleur', None)
 
-# Callback to handle button actions (validate and delete)
+                    return fig, marque_value, couleur_value
+    return {}, None, None
+
+# Callback pour gérer les actions des boutons (valider et supprimer)
 @dash.callback(
     [Output('annotation-graph', 'figure', allow_duplicate=True), 
-    Output('action-message', 'children', allow_duplicate=True), 
-    Output('redirect', 'href')],
+     Output('action-message', 'children', allow_duplicate=True), 
+     Output('redirect', 'href')],
     [Input('valider-button', 'n_clicks'), 
-    Input('supprimer-button', 'n_clicks')],
+     Input('supprimer-button', 'n_clicks')],
     [State('annotation-graph', 'relayoutData'), 
-    State('url', 'href'), 
-    State('user_name_store', 'data'), 
-    State('modification-store', 'data'),
-    State('marque_vehicule', 'value'), 
-    State('couleur_vehicule', 'value')], 
+     State('url', 'href'), 
+     State('user_name_store', 'data'), 
+     State('modification-store', 'data'),
+     State('marque_vehicule', 'value'), 
+     State('couleur_vehicule', 'value')], 
     prevent_initial_call='initial_duplicate'
 )
+
 def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_name, modification_made, marque, couleur):
     ctx = dash.callback_context
 
     if not ctx.triggered:
         return dash.no_update, dash.no_update, dash.no_update
 
-    # Parse the URL to extract the annotation ID
+    # Analyser l'URL pour extraire l'ID de l'annotation
     parsed_url = urlparse(href)
     params = parse_qs(parsed_url.query)
     annotation_id = params.get('id', [None])[0]
 
-    # Handle "Validate" button click
+    # Gérer le clic sur le bouton "Valider"
     if ctx.triggered[0]['prop_id'] == 'valider-button.n_clicks' and user_name:
         if annotation_id:
-            # Load all annotations from the JSON file
+            # Charger toutes les annotations depuis le fichier JSON
             with open(annotations_file, 'r') as f:
                 annotations = json.load(f)
 
-            # Find the annotation to update
+            # Trouver l'annotation à mettre à jour
             updated = False
             for annotation in annotations:
                 if str(annotation['id']) == str(annotation_id):
-                    # If modification button has been clicked, update annotations
+                    # Si le bouton de modification a été cliqué, mettre à jour les annotations
                     if modification_made:
-                        # Extract new annotations from relayoutData
+                        # Extraire les nouvelles annotations à partir de relayoutData
                         new_annotations = []
                         for shape in relayout_data.get('shapes', []):
                             new_annotations.append({
@@ -220,34 +228,34 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
                                 'opacity': shape.get('opacity', 1)
                             })
 
-                        # Update the annotation's shapes with the new ones
+                        # Mettre à jour les formes de l'annotation avec les nouvelles
                         annotation['annotations'] = new_annotations
 
-                    # Update reviewer and review date fields
+                    # Mettre à jour les champs de révision et la date de révision
                     annotation['reviewer'] = user_name
                     annotation['date_review'] = datetime.now().strftime('%Y-%m-%d')
 
-                    # Update marque and couleur from the dropdowns
-                    annotation['marque'] = marque  # Update marque
-                    annotation['couleur'] = couleur  # Update couleur
+                    # Mettre à jour marque et couleur à partir des dropdowns
+                    annotation['marque'] = marque  # Mettre à jour la marque
+                    annotation['couleur'] = couleur  # Mettre à jour la couleur
 
                     updated = True
-                    break  # Stop after finding and updating the right annotation
+                    break  # Arrêter après avoir trouvé et mis à jour la bonne annotation
 
             if updated:
-                # Save the updated annotations back to the JSON file
+                # Sauvegarder les annotations mises à jour dans le fichier JSON
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
-                # Load the image for the selected annotation
+                # Charger l'image pour l'annotation sélectionnée
                 selected_annotation = get_annotation_by_id(annotation_id)
                 if selected_annotation:
                     image = load_image(selected_annotation['nom_image'])
                     if image is not None:
-                        # Create a new figure for the updated image
+                        # Créer une nouvelle figure pour l'image mise à jour
                         fig = px.imshow(image)
 
-                        # Update the layout to enable drawing a new rectangle
+                        # Mettre à jour la mise en page pour permettre le dessin d'un nouveau rectangle
                         fig.update_layout(
                             dragmode="drawrect",
                             newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2))
@@ -255,17 +263,17 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
 
                         return fig, html.Div("L'annotation a été validée et sauvegardée avec succès.", className='text-center my-3'), '/annotation'
 
-    # Handle "Delete" button click
+    # Gérer le clic sur le bouton "Supprimer"
     if ctx.triggered[0]['prop_id'] == 'supprimer-button.n_clicks':
         if annotation_id:
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations = json.load(f)
 
-                # Filter out the annotation with the corresponding ID
+                # Filtrer l'annotation avec l'ID correspondant
                 annotations = [ann for ann in annotations if str(ann['id']) != str(annotation_id)]
 
-                # Save the updated annotations
+                # Sauvegarder les annotations mises à jour
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
@@ -273,7 +281,7 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
 
     return dash.no_update, "Une erreur s'est produite lors de l'action.", dash.no_update
 
-# Callback to handle the click on the "Edit" button
+# Callback pour gérer le clic sur le bouton "Modifier"
 @dash.callback(
     [Output('annotation-graph', 'figure', allow_duplicate=True), 
      Output('action-message', 'children', allow_duplicate=True), 
@@ -285,44 +293,50 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
 )
 def handle_modifier_button(modifier_clicks, href):
     if modifier_clicks:
-        # Extract the annotation ID from the URL
+        # Extraire l'ID de l'annotation à partir de l'URL
         parsed_url = urlparse(href)
         params = parse_qs(parsed_url.query)
         annotation_id = params.get('id', [None])[0]
 
         if annotation_id:
-            # Load all annotations from the JSON file
+            # Charger toutes les annotations depuis le fichier JSON
             with open(annotations_file, 'r') as f:
                 annotations = json.load(f)
 
-            # Find and clear only the 'annotations' field for the selected annotation
+            # Trouver et effacer uniquement le champ 'annotations' pour l'annotation sélectionnée
             updated = False
             for annotation in annotations:
                 if str(annotation['id']) == str(annotation_id):
-                    # Clear the shapes in the annotation
-                    annotation['annotations'] = []  # Clear the annotations for the selected vehicle
+                    # Effacer les formes dans l'annotation
+                    annotation['annotations'] = []  # Effacer les annotations pour le véhicule sélectionné
                     updated = True
-                    break  # Stop after finding and updating the right annotation
+                    break  # Arrêter après avoir trouvé et mis à jour la bonne annotation
 
             if updated:
-                # Save the updated annotations back to the JSON file
+                # Sauvegarder les annotations mises à jour dans le fichier JSON
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
-                # Load the image for the selected annotation
+                # Charger l'image pour l'annotation sélectionnée
                 selected_annotation = get_annotation_by_id(annotation_id)
                 if selected_annotation:
                     image = load_image(selected_annotation['nom_image'])
                     if image is not None:
-                        # Create a new figure for the updated image
+                        # Créer une nouvelle figure pour l'image mise à jour
                         fig = px.imshow(image)
 
-                        # Update the layout to enable drawing a new rectangle
+                        # Mettre à jour la mise en page pour permettre le dessin d'un nouveau rectangle
                         fig.update_layout(
                             dragmode="drawrect",
                             newshape=dict(fillcolor="cyan", opacity=0.3, line=dict(color="black", width=2))
                         )
 
-                        return fig, html.Div("L'ancienne annotation a été supprimée. Vous pouvez dessiner une nouvelle annotation.", className='text-center'), True, True  # Set modification to True
+                        return fig, html.Div("L'ancienne annotation a été supprimée. Vous pouvez dessiner une nouvelle annotation.", className='text-center'), True, True  # Définir modification à True
 
-    return dash.no_update, dash.no_update, False, False  # Set modification to False if not clicked
+    return dash.no_update, dash.no_update, False, False  # Définir modification à False si non cliqué
+
+# Set the layout for the app
+app.layout = layout
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
