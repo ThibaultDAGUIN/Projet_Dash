@@ -10,123 +10,122 @@ from datetime import datetime
 
 dash.register_page(__name__, path_template="/verifier")
 
-# Chemins des fichiers
+
+
+# Paths to files
 dossier_img = './data/cars/'
 annotations_file = './data/annotations.json'
 
-# Fonction pour charger une annotation par ID
+# Function to load an annotation by ID
 def get_annotation_by_id(annotation_id):
     if os.path.exists(annotations_file):
         with open(annotations_file, 'r') as f:
             annotations = json.load(f)
             
-            # Ensure annotations is a list
             if isinstance(annotations, list):
-                # Find the annotation by id
                 for annotation in annotations:
                     if str(annotation['id']) == str(annotation_id):
                         return annotation
-            else:
-                print("Erreur : Le fichier JSON ne contient pas une liste.")
-                return None
     return None
 
-# Fonction pour charger une image par nom
+# Function to load an image by name
 def load_image(image_name):
     img_path = os.path.join(dossier_img, image_name)
     if os.path.exists(img_path):
         return io.imread(img_path)
     else:
-        print(f"Image {image_name} non trouvée au chemin {img_path}")
+        print(f"Image {image_name} not found at path {img_path}")
         return None
 
-# Mise en page pour la page de vérification
+# Layout for the verification page
 layout = html.Div([
     dcc.Store(id='modification-store', data=False),  # Store to track if modification happened
 
     html.H3("Vérifier l'Annotation", className='text-center my-3'),
     dcc.Graph(id='annotation-graph'),
-    dbc.Row(
-            [
-                dbc.Col(
-                    dcc.Dropdown(
-                        placeholder="Marque du véhicule",
-                        id="marque_vehicule",
-                        style={'width': '400px', 'text-align': 'center'},
-                        options=[
-                            {'label': 'Audi', 'value': 'Audi'},
-                            {'label': 'BMW', 'value': 'BMW'},
-                            {'label': 'Citroën', 'value': 'Citroen'},
-                            {'label': 'Dacia', 'value': 'Dacia'},
-                            {'label': 'Fiat', 'value': 'Fiat'},
-                            {'label': 'Ford', 'value': 'Ford'},
-                            {'label': 'Mercedes', 'value': 'Mercedes'},
-                            {'label': 'Peugeot', 'value': 'Peugeot'},
-                            {'label': 'Renault', 'value': 'Renault'},
-                            {'label': 'Toyota', 'value': 'Toyota'},
-                            {'label': 'Volkswagen', 'value': 'Volkswagen'},
-                            {'label': 'Mazda', 'value': 'Mazda'},
-                            {'label': 'Tesla', 'value': 'Tesla'},
-                            {'label': 'Porsche', 'value': 'Porsche'},
-                            {'label': 'Autre', 'value': 'Autre'},
-                        ],
-                    ),
-                    width='auto'
-                ),
-                
-                dbc.Col(
-                    dcc.Dropdown(
-                        placeholder="Couleur du véhicule",
-                        id="couleur_vehicule",
-                        style={'width': '400px', 'text-align': 'center'},
-                        options=[
-                            {'label': 'Blanc', 'value': 'Blanc'},
-                            {'label': 'Noir', 'value': 'Noir'},
-                            {'label': 'Bleu', 'value': 'Bleu'},
-                            {'label': 'Rouge', 'value': 'Rouge'},
-                            {'label': 'Vert', 'value': 'Vert'},
-                            {'label': 'Jaune', 'value': 'Jaune'},
-                            {'label': 'Gris', 'value': 'Gris'},
-                            {'label': 'Marron', 'value': 'Marron'},
-                            {'label': 'Orange', 'value': 'Orange'},
-                            {'label': 'Violet', 'value': 'Violet'},
-                            {'label': 'Rose', 'value': 'Rose'},
-                            {'label': 'Autre', 'value': 'Autre'},
-                        ],
-                    ),
-                    width='auto'
-                ),
-            ],
-            justify='center',
-            className='d-flex my-3',
-            style={'alignItems': 'center'}
+    
+    # Dropdowns for vehicle brand and color
+    dbc.Row([
+        dbc.Col(
+            dcc.Dropdown(
+                placeholder="Marque du véhicule",
+                id="marque_vehicule",
+                style={'width': '400px', 'text-align': 'center'},
+                options=[
+                    {'label': 'Audi', 'value': 'Audi'},
+                    {'label': 'BMW', 'value': 'BMW'},
+                    {'label': 'Citroën', 'value': 'Citroen'},
+                    {'label': 'Dacia', 'value': 'Dacia'},
+                    {'label': 'Fiat', 'value': 'Fiat'},
+                    {'label': 'Ford', 'value': 'Ford'},
+                    {'label': 'Mercedes', 'value': 'Mercedes'},
+                    {'label': 'Peugeot', 'value': 'Peugeot'},
+                    {'label': 'Renault', 'value': 'Renault'},
+                    {'label': 'Toyota', 'value': 'Toyota'},
+                    {'label': 'Volkswagen', 'value': 'Volkswagen'},
+                    {'label': 'Mazda', 'value': 'Mazda'},
+                    {'label': 'Tesla', 'value': 'Tesla'},
+                    {'label': 'Porsche', 'value': 'Porsche'},
+                    {'label': 'Autre', 'value': 'Autre'},
+                ],
+                #    value=marque_value,
+            ),
+            width='auto'
         ),
+        
+        dbc.Col(
+            dcc.Dropdown(
+                placeholder="Couleur du véhicule",
+                id="couleur_vehicule",
+                style={'width': '400px', 'text-align': 'center'},
+                options=[
+                    {'label': 'Blanc', 'value': 'Blanc'},
+                    {'label': 'Noir', 'value': 'Noir'},
+                    {'label': 'Bleu', 'value': 'Bleu'},
+                    {'label': 'Rouge', 'value': 'Rouge'},
+                    {'label': 'Vert', 'value': 'Vert'},
+                    {'label': 'Jaune', 'value': 'Jaune'},
+                    {'label': 'Gris', 'value': 'Gris'},
+                    {'label': 'Marron', 'value': 'Marron'},
+                    {'label': 'Orange', 'value': 'Orange'},
+                    {'label': 'Violet', 'value': 'Violet'},
+                    {'label': 'Rose', 'value': 'Rose'},
+                    {'label': 'Autre', 'value': 'Autre'},
+                ],
+                # value=couleur_value,
+            ),
+            width='auto'
+        ),
+    ],
+    justify='center',
+    className='d-flex my-3',
+    style={'alignItems': 'center'}
+    ),
 
-    # Centrer les boutons en utilisant une ligne Bootstrap
-    dbc.Row(
-        [
-            dbc.Col(
-                dbc.Button("Valider l'annotation", id="valider-button", color="success", n_clicks=0),
-                width="auto"
-            ),
-            dbc.Col(
-                dbc.Button("Modifier l'annotation", id="modifier-button", color="primary", n_clicks=0),
-                width="auto"
-            ),
-            dbc.Col(
-                dbc.Button("Supprimer l'annotation", id="supprimer-button", color="danger", n_clicks=0, disabled=False),
-                width="auto"
-            )
-        ],
-        justify="center",  # Centrer les boutons
-        className="my-3"  # Ajouter une marge verticale
+    # Center buttons using a Bootstrap row
+    dbc.Row([
+        dbc.Col(
+            dbc.Button("Valider l'annotation", id="valider-button", color="success", n_clicks=0),
+            width="auto"
+        ),
+        dbc.Col(
+            dbc.Button("Modifier l'annotation", id="modifier-button", color="primary", n_clicks=0),
+            width="auto"
+        ),
+        dbc.Col(
+            dbc.Button("Supprimer l'annotation", id="supprimer-button", color="danger", n_clicks=0, disabled=False),
+            width="auto"
+        )
+    ],
+    justify="center",  # Center buttons
+    className="my-3"  # Add vertical margin
     ),
 
     html.Div(id="action-message"),
     dcc.Location(id="redirect", refresh=True)
 ])
 
-# Callback pour afficher l'image avec les annotations
+# Callback to display the image with annotations
 @dash.callback(
     Output('annotation-graph', 'figure', allow_duplicate=True),
     Input('url', 'href'),
@@ -134,21 +133,21 @@ layout = html.Div([
 )
 def display_image_with_annotations(href):
     if href:
-        # Analyser l'URL pour extraire l'ID de l'annotation
+        # Parse the URL to extract the annotation ID
         parsed_url = urlparse(href)
         params = parse_qs(parsed_url.query)
         annotation_id = params.get('id', [None])[0]
 
         if annotation_id:
-            # Obtenir les données d'annotation par ID
+            # Get the annotation by ID
             annotation = get_annotation_by_id(annotation_id)
             if annotation:
-                # Charger l'image correspondante
+                # Load the corresponding image
                 image = load_image(annotation['nom_image'])
                 if image is not None:
                     fig = px.imshow(image)
 
-                    # Parcourir chaque forme d'annotation et l'ajouter à la figure
+                    # Iterate through each annotation shape and add to the figure
                     for ann in annotation['annotations']:
                         fig.add_shape(
                             type=ann['type'],
@@ -168,7 +167,7 @@ def display_image_with_annotations(href):
                     return fig
     return {}
 
-# Callback pour gérer les boutons "Valider" et "Supprimer"
+# Callback to handle button actions (validate and delete)
 @dash.callback(
     [Output('annotation-graph', 'figure', allow_duplicate=True), 
     Output('action-message', 'children', allow_duplicate=True), 
@@ -189,12 +188,12 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
     if not ctx.triggered:
         return dash.no_update, dash.no_update, dash.no_update
 
-    # Analyser l'URL pour extraire l'ID de l'annotation
+    # Parse the URL to extract the annotation ID
     parsed_url = urlparse(href)
     params = parse_qs(parsed_url.query)
     annotation_id = params.get('id', [None])[0]
 
-    # Gérer le clic sur le bouton "Valider"
+    # Handle "Validate" button click
     if ctx.triggered[0]['prop_id'] == 'valider-button.n_clicks' and user_name:
         if annotation_id:
             # Load all annotations from the JSON file
@@ -205,7 +204,7 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
             updated = False
             for annotation in annotations:
                 if str(annotation['id']) == str(annotation_id):
-                    # Si modif = True (modification button has been clicked), update annotations
+                    # If modification button has been clicked, update annotations
                     if modification_made:
                         # Extract new annotations from relayoutData
                         new_annotations = []
@@ -224,7 +223,7 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
                         # Update the annotation's shapes with the new ones
                         annotation['annotations'] = new_annotations
 
-                    # Always update the reviewer and date_review fields
+                    # Update reviewer and review date fields
                     annotation['reviewer'] = user_name
                     annotation['date_review'] = datetime.now().strftime('%Y-%m-%d')
 
@@ -256,17 +255,17 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
 
                         return fig, html.Div("L'annotation a été validée et sauvegardée avec succès.", className='text-center my-3'), '/annotation'
 
-    # Gérer le clic sur le bouton "Supprimer"
+    # Handle "Delete" button click
     if ctx.triggered[0]['prop_id'] == 'supprimer-button.n_clicks':
         if annotation_id:
             if os.path.exists(annotations_file):
                 with open(annotations_file, 'r') as f:
                     annotations = json.load(f)
 
-                # Filtrer l'annotation avec l'ID correspondant
+                # Filter out the annotation with the corresponding ID
                 annotations = [ann for ann in annotations if str(ann['id']) != str(annotation_id)]
 
-                # Enregistrer les annotations mises à jour
+                # Save the updated annotations
                 with open(annotations_file, 'w') as f:
                     json.dump(annotations, f, indent=2)
 
@@ -274,7 +273,7 @@ def handle_buttons(valider_clicks, supprimer_clicks, relayout_data, href, user_n
 
     return dash.no_update, "Une erreur s'est produite lors de l'action.", dash.no_update
 
-# Callback pour gérer le clic sur le bouton Modifier
+# Callback to handle the click on the "Edit" button
 @dash.callback(
     [Output('annotation-graph', 'figure', allow_duplicate=True), 
      Output('action-message', 'children', allow_duplicate=True), 

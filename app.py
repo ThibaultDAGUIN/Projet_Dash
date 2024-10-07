@@ -13,10 +13,10 @@ app.layout = html.Div([
     dbc.NavbarSimple(
         children=[
             dbc.NavLink('Accueil', href='/accueil'),
-            dbc.NavLink('À propos', href='/apropos'),
             dbc.NavLink('Interface d\'annotation', href='/annoter'),
             dbc.NavLink('Liste des annotations', href='/annotation'),
             dbc.NavLink('Statistiques', href='/stats'),
+            dbc.NavLink('À propos', href='/apropos'),
             html.Span(id='user_status', className='text-light align-self-center', style={'font-size': '0.9rem', 'marginLeft': '100px', 'marginRight':'20px'}),
             dbc.Button('Déconnexion', color='danger', outline=True, className='text-light align-self-center', style={'font-size': '0.8rem'}, id='logout_button', n_clicks=0),
         ],

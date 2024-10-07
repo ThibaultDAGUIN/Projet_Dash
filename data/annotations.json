@@ -2,19 +2,45 @@
   {
     "id": 1,
     "nom_image": "car432.jpg",
-    "annotateur": "Ma\u00ebl",
-    "date_annotation": "2024-10-07",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-07",
-    "marque": "Fiat",
-    "couleur": "Noir",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": null,
+    "couleur": null,
     "annotations": [
       {
         "type": "rect",
         "x0": 17.083870967741937,
-        "y0": 69.37676952731225,
-        "x1": 439.0967741935484,
-        "y1": 227.63160823698968,
+        "y0": 70.14128565634451,
+        "x1": 442.9193548387097,
+        "y1": 225.33805984989291,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nom_image": "car434.jpg",
+    "annotateur": "Vadim",
+    "date_annotation": "2024-10-08",
+    "reviewer": "Ma\u00ebl",
+    "date_review": "2024-10-08",
+    "marque": null,
+    "couleur": null,
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 15.55483870967742,
+        "y0": 61.731608236989665,
+        "x1": 457.4451612903226,
+        "y1": 221.5154792047316,
         "line": {
           "color": "black",
           "width": 2,

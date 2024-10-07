@@ -165,8 +165,6 @@ layout = html.Div(
         ),
         html.Pre(id="annotation_data", className='my-3'),
         dcc.Store(id='user_name_store', storage_type='local'), # Pour stocker le nom d'utilisateur en cours sur la session
-        dcc.Store(id='current_image_store', storage_type='local'), # Pour stocker l'image actuelle
-
     ]
 )
 
@@ -232,6 +230,24 @@ def afficher_annotation(n_clicks, relayoutData, user_name, marque, couleur):
                 with open(annotations_file, 'r') as f:
                     annotations_data = json.load(f)
 
+            filtre_shapes = []
+            for shape in relayoutData['shapes']:
+                filtered_shape = {
+                    'type': shape.get('type'),
+                    'x0': shape.get('x0'),
+                    'y0': shape.get('y0'),
+                    'x1': shape.get('x1'),
+                    'y1': shape.get('y1'),
+                    'line': {
+                        'color': shape['line'].get('color'),
+                        'width': shape['line'].get('width'),
+                        'dash': shape['line'].get('dash')
+                    },
+                    'fillcolor': shape.get('fillcolor'),
+                    'opacity': shape.get('opacity'),
+                }
+                filtre_shapes.append(filtered_shape)
+
             # Modifier le fichier json annotation avec le nom de l'annotateur
             new_annotation = {
                 'id': len(annotations_data) + 1,
@@ -242,7 +258,7 @@ def afficher_annotation(n_clicks, relayoutData, user_name, marque, couleur):
                 'date_review': '',
                 'marque': marque,
                 'couleur': couleur,
-                'annotations': relayoutData['shapes']
+                'annotations': filtre_shapes
             }
 
             # Ajouter les nouvelles annotations
@@ -307,3 +323,13 @@ def reset_annotation(n_clicks, relayoutData):
         )
         return fig
     return dash.no_update
+
+@callback(
+    Output('bouton_reset', 'disabled'),
+    Input('graph-styled-annotations', 'relayoutData'),
+)
+
+def activer_bouton(relayoutData):
+    if relayoutData is not None and 'shapes' in relayoutData and relayoutData['shapes']:
+        return False
+    return True

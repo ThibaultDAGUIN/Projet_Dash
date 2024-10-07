@@ -25,10 +25,10 @@ def prepare_table_data():
             'Nom Image': annotation.get('nom_image', 'N/A'),
             'Marque': annotation.get('marque', 'N/A'),
             'Couleur': annotation.get('couleur', 'N/A'),
-            'Date': annotation.get('date_annotation', 'N/A'),
             'Annotateur': annotation.get('annotateur', 'Anonyme'),
-            'Date Review': annotation.get('date_review', 'N/A'),
+            'Date': annotation.get('date_annotation', 'N/A'),
             'Reviewer': annotation.get('reviewer', 'N/A'),
+            'Date Review': annotation.get('date_review', 'N/A'),
             'id': annotation.get('id')
         })
     
@@ -57,13 +57,21 @@ layout = html.Div([
         id='annotation-table',
         columns=columns,
         data=[
-            {**row, 'Verifier': f'<a href="/verifier?id={row["id"]}">Vérifier</a>'}
+            {**row, 'Verifier': f'<div style="display: flex; justify-content: center; align-items: center; height: 100%;"><a href="/verifier?id={row["id"]}" style="display: inline-block; padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;"><i class="fas fa-check" style="margin-right: 5px;"></i> Vérifier</a></div>'}
             for row in prepare_table_data()
         ],
         style_table={'width': '80%', 'margin': 'auto'},
         style_header={'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold'},
-        style_cell={'textAlign': 'left'},
+        style_cell={
+            'textAlign': 'center',  # Centrer horizontalement
+            'verticalAlign': 'middle',  # Centrer verticalement
+            'justify-content': 'center',  # Centrer horizontalement
+            'align-items': 'center',  # Centrer verticalement
+            'height': '100%',  # Assurer que les cellules prennent toute la hauteur disponible
+            'fontFamily': 'Arial'  # Changer la police des cellules
+        },
         page_size=10,
+        markdown_options={'html': True}  # Permettre le rendu du HTML dans Markdown
     ),
     
     # Div cachée pour l'état ou la navigation
@@ -78,7 +86,7 @@ layout = html.Div([
 def update_table(_):
     """Callback pour mettre à jour le DataTable avec les dernières données d'annotation."""
     return [
-            {**row, 'Verifier': 'Cliquez la cellule pour vérifier l\'annotation'}
+        {**row, 'Verifier': f'<div style="display: flex; justify-content: center; align-items: center; height: 100%;"><a href="/verifier?id={row["id"]}" style="display: inline-block; padding: 5px 10px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;"><i class="fas fa-check" style="margin-right: 5px;"></i> Vérifier</a></div>'}
         for row in prepare_table_data()
     ]
 
