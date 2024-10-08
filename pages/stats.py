@@ -164,9 +164,10 @@ def update_personal_stats(selected_user):
  
 # Layout principal
 layout = html.Div([
-    # html.H3("Statistiques"),
-    dcc.Tabs([
-        dcc.Tab(label="Stats Globales", children=[global_stats()]),
-        dcc.Tab(label="Stats Personnelles", children=[personal_stats()])
-    ], className="custom-tabs")
+    html.Div(style={'backgroundColor': '#f0f0f0'}, children=[
+        dcc.Tabs([
+            dcc.Tab(label="Stats Globales", children=[global_stats()]),
+            dcc.Tab(label="Stats Personnelles", children=[personal_stats()])
+        ], className="custom-tabs")
+    ])
 ])
