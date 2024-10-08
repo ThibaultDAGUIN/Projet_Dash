@@ -63,4 +63,4 @@ def handle_logout(n_clicks):
     return dash.no_update
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
