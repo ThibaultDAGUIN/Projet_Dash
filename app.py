@@ -10,6 +10,7 @@ app = dash.Dash(__name__, use_pages=True, external_stylesheets=[
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=True),
+    dcc.Interval(id='interval-component', interval=1*1000, n_intervals=0),  # Intervalle de 1 seconde
     dbc.NavbarSimple(
         children=[
             dbc.NavLink('Accueil', href='/accueil'),
@@ -63,4 +64,4 @@ def handle_logout(n_clicks):
     return dash.no_update
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)

@@ -27,20 +27,20 @@
   },
   {
     "id": 2,
-    "nom_image": "car434.jpg",
-    "annotateur": "Vadim",
+    "nom_image": "porsche 911-gt3rs.jpeg",
+    "annotateur": "Manon",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
-    "marque": "BMW",
-    "couleur": "Noir",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Porsche",
+    "couleur": "Gris",
     "annotations": [
       {
         "type": "rect",
-        "x0": 20.141935483870967,
-        "y0": 46.441285656344505,
-        "x1": 455.9161290322581,
-        "y1": 226.10257597892516,
+        "x0": 21.99559838079637,
+        "y0": 48.75289798859627,
+        "x1": 440.731082251764,
+        "y1": 231.52063992408014,
         "line": {
           "color": "black",
           "width": 2,
@@ -53,20 +53,20 @@
   },
   {
     "id": 3,
-    "nom_image": "porsche 911-gt3rs.jpeg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "car434.jpg",
+    "annotateur": "Manon",
     "date_annotation": "2024-10-08",
     "reviewer": "",
     "date_review": "",
-    "marque": null,
-    "couleur": null,
+    "marque": "Autre",
+    "couleur": "Gris",
     "annotations": [
       {
         "type": "rect",
-        "x0": 25.442154029107854,
-        "y0": 49.6109625047253,
-        "x1": 454.4744120936238,
-        "y1": 234.09483347246723,
+        "x0": 25.49354838709677,
+        "y0": 56.37999533376386,
+        "x1": 452.0935483870967,
+        "y1": 213.87031791440904,
         "line": {
           "color": "black",
           "width": 2,
@@ -79,20 +79,20 @@
   },
   {
     "id": 4,
-    "nom_image": "car431.jpg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "flashmcqueen.jpeg",
+    "annotateur": "Thibault",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
-    "marque": "Mercedes",
-    "couleur": "Gris",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Ford",
+    "couleur": "Rouge",
     "annotations": [
       {
         "type": "rect",
-        "x0": 11.057931026335684,
-        "y0": 141.15547692083544,
-        "x1": 460.8482536069808,
-        "y1": 347.2619285337386,
+        "x0": 71.15932459677418,
+        "y0": 108.01095640120968,
+        "x1": 976.0367439516128,
+        "y1": 511.21095640120967,
         "line": {
           "color": "black",
           "width": 2,
@@ -105,20 +105,20 @@
   },
   {
     "id": 5,
-    "nom_image": "car425.jpg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "car431.jpg",
+    "annotateur": "Vadim",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
-    "marque": "Volkswagen",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mercedes",
     "couleur": "Gris",
     "annotations": [
       {
         "type": "rect",
-        "x0": 26.964789605909782,
-        "y0": 86.99031559113534,
-        "x1": 364.7873702510711,
-        "y1": 343.5064446233934,
+        "x0": 11.038887663810486,
+        "y0": 150.2651543401903,
+        "x1": 457.4130812121977,
+        "y1": 333.5974124047064,
         "line": {
           "color": "black",
           "width": 2,
@@ -131,20 +131,20 @@
   },
   {
     "id": 6,
-    "nom_image": "car427.jpg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "car429.jpg",
+    "annotateur": "Vadim",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
-    "marque": null,
-    "couleur": null,
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Noir",
     "annotations": [
       {
         "type": "rect",
-        "x0": 51.013176702683985,
-        "y0": 109.89354139758696,
-        "x1": 427.77124121881303,
-        "y1": 328.6193478491998,
+        "x0": 145.79440445438507,
+        "y0": 80.4367679719002,
+        "x1": 402.6718238092237,
+        "y1": 236.39805829448085,
         "line": {
           "color": "black",
           "width": 2,
@@ -157,20 +157,20 @@
   },
   {
     "id": 7,
-    "nom_image": "car432.jpg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "toyota-yaris.jpg",
+    "annotateur": "Vadim",
     "date_annotation": "2024-10-08",
-    "reviewer": "Thibault",
-    "date_review": "2024-10-08",
-    "marque": "Volkswagen",
-    "couleur": "Blanc",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Toyota",
+    "couleur": "Rouge",
     "annotations": [
       {
         "type": "rect",
-        "x0": 18.612903225806452,
-        "y0": 69.37676952731225,
-        "x1": 447.5064516129032,
-        "y1": 229.92515662408644,
+        "x0": 280.1737808719758,
+        "y0": 384.9064281832787,
+        "x1": 1543.1092647429434,
+        "y1": 1091.22900882844,
         "line": {
           "color": "black",
           "width": 2,
@@ -183,20 +183,20 @@
   },
   {
     "id": 8,
-    "nom_image": "car426.jpg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "car430.jpg",
+    "annotateur": "Thibault",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
-    "marque": "BMW",
-    "couleur": "Blanc",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Peugeot",
+    "couleur": "Noir",
     "annotations": [
       {
         "type": "rect",
-        "x0": 41.803225806451614,
-        "y0": 84.5141873267389,
-        "x1": 418.9645161290323,
-        "y1": 265.9593486170615,
+        "x0": 79.53633993825603,
+        "y0": 138.53999377835183,
+        "x1": 388.40085606728826,
+        "y1": 266.97870345577115,
         "line": {
           "color": "black",
           "width": 2,
@@ -209,20 +209,20 @@
   },
   {
     "id": 9,
-    "nom_image": "car429.jpg",
-    "annotateur": "Ma\u00ebl",
+    "nom_image": "mazdacx3.jpg",
+    "annotateur": "Thibault",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
-    "marque": "Ford",
-    "couleur": "Noir",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Mazda",
+    "couleur": "Rouge",
     "annotations": [
       {
         "type": "rect",
-        "x0": 139.66129032258067,
-        "y0": 72.28192926222277,
-        "x1": 431.19677419354844,
-        "y1": 241.49483248802923,
+        "x0": 116.53444351688509,
+        "y0": 280.2638528147051,
+        "x1": 1103.9667015814014,
+        "y1": 842.3864334598663,
         "line": {
           "color": "black",
           "width": 2,
@@ -235,20 +235,306 @@
   },
   {
     "id": 10,
+    "nom_image": "208.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Peugeot",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 177.71117100869458,
+        "y0": 156.6490217639554,
+        "x1": 719.3079452022431,
+        "y1": 452.37805402201997,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "nom_image": "porsche 911-gt3rs.jpeg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Porsche",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 16.847211284022176,
+        "y0": 38.45612379504788,
+        "x1": 442.4472112840221,
+        "y1": 236.66902702085432,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "nom_image": "car426.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "BMW",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 63.2266625189012,
+        "y0": 85.53354216544858,
+        "x1": 405.72988832535276,
+        "y1": 258.82386474609376,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 13,
     "nom_image": "car434.jpg",
     "annotateur": "Thibault",
     "date_annotation": "2024-10-08",
-    "reviewer": "Ma\u00ebl",
-    "date_review": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 20.141935483870963,
+        "y0": 42.618705011183216,
+        "x1": 452.85806451612893,
+        "y1": 219.9864469466671,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "nom_image": "car432.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
     "marque": "Volkswagen",
     "couleur": "Blanc",
     "annotations": [
       {
         "type": "rect",
-        "x0": 12.496774193548388,
-        "y0": 65.55418888215095,
-        "x1": 434.50967741935483,
-        "y1": 224.57354372086064,
+        "x0": 8.674193548387096,
+        "y0": 60.967092107957406,
+        "x1": 439.0967741935483,
+        "y1": 228.39612436602192,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "nom_image": "car435.jpg",
+    "annotateur": "Thibault",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Citroen",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 84.58387096774196,
+        "y0": 143.73741317256807,
+        "x1": 221.32580645161298,
+        "y1": 249.079348656439,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "nom_image": "car426.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "BMW",
+    "couleur": "Blanc",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 58.12988832535281,
+        "y0": 85.53354216544858,
+        "x1": 405.72988832535276,
+        "y1": 237.41741313319054,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "nom_image": "toyota-yaris.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Toyota",
+    "couleur": "Rouge",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 291.68990990423384,
+        "y0": 438.6483636671497,
+        "x1": 1531.5931357106854,
+        "y1": 1102.7451378606982,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "nom_image": "car425.jpg",
+    "annotateur": "Manon",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Volkswagen",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 26.94570824407763,
+        "y0": 81.26450913952243,
+        "x1": 360.1876437279487,
+        "y1": 345.79676720403853,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "nom_image": "car428.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 10.84075967111895,
+        "y0": 144.8561237950479,
+        "x1": 199.61495321950605,
+        "y1": 246.10773669827367,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "nom_image": "car430.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Peugeot",
+    "couleur": "Noir",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 54.052468970514106,
+        "y0": 130.38515506867438,
+        "x1": 388.40085606728826,
+        "y1": 275.13354216544855,
+        "line": {
+          "color": "black",
+          "width": 2,
+          "dash": "solid"
+        },
+        "fillcolor": "cyan",
+        "opacity": 0.3
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "nom_image": "car427.jpg",
+    "annotateur": "Ma\u00ebl",
+    "date_annotation": "2024-10-08",
+    "reviewer": "",
+    "date_review": "",
+    "marque": "Autre",
+    "couleur": "Gris",
+    "annotations": [
+      {
+        "type": "rect",
+        "x0": 63.59086953440023,
+        "y0": 117.90967042984502,
+        "x1": 418.5908695344003,
+        "y1": 306.8612833330708,
         "line": {
           "color": "black",
           "width": 2,

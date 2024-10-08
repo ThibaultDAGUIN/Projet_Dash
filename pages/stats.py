@@ -161,9 +161,13 @@ def update_personal_stats(selected_user):
         ),
  
     ])
+    
+
  
 # Layout principal
 layout = html.Div([
+    dcc.Interval(id='interval-component', interval=1*1000, n_intervals=0),  # Intervalle de 1 seconde
+
     html.Div(style={'backgroundColor': '#f0f0f0'}, children=[
         dcc.Tabs([
             dcc.Tab(label="Stats Globales", children=[global_stats()]),
@@ -171,3 +175,4 @@ layout = html.Div([
         ], className="custom-tabs")
     ])
 ])
+
